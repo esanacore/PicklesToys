@@ -1,0 +1,37 @@
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vs/
+.vscode/
+.idea/
+*.swp
+
+# Local-only scratch (never committed)
+.local/
+.gstack/
+
+# Secrets — none should ever exist in this project, belt-and-suspenders.
+# A stray key dropped in the repo would otherwise be staged by `git add -A`
+# without anyone noticing.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ecdsa*
+id_ed25519*
+credentials.json
+service-account*.json
+.netrc
+terraform.tfstate*
+
+# The maintainer's global gitignore (~/.gitignore_global) excludes lib/,
+# build/, dist/, bin/, and packages/ as Python packaging conventions. This
+# project uses none of those directory names today — but if one is ever added
+# as real source, re-include it here or a fresh clone will be missing files
+# with no warning from `git status`.

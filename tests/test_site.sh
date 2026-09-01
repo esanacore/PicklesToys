@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Automated checks for the static site (constitution Principle 2).
+#
+# The site is dependency-free static HTML/CSS/JS, so these are structural
+# assertions run with grep — no runtime or package install required, which
+# keeps CI honest on a bare ubuntu runner. Test IDs (T-xxx) are referenced
+# from docs/REQUIREMENTS_TRACEABILITY.md.
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+site="$root/site"
+index="$site/index.html"
+
+pass=0
+fail=0
+
+check() {
+  # check <test-id> <description> <command...>
+  local id="$1" desc="$2"
+  shift 2
+  if "$@" >/dev/null 2>&1; then
+    echo "  PASS  $id  $desc"
+    pass=$((pass + 1))
+  else
+    echo "  FAIL  $id  $desc"
+    fail=$((fail + 1))
+  fi
+}
+
+echo "Site structural tests"
+echo "====================="
+
+# --- T-001 .. T-007: required files exist -------------------------------
+check T-001 "index.html exists"            test -f "$index"
+check T-002 "styles.css exists"            test -f "$site/styles.css"
+check T-003 "app.js exists"                test -f "$site/app.js"
+check T-004 "404.html exists"              test -f "$site/404.html"
+check T-005 "deploy workflow exists"       test -f "$root/.github/workflows/deploy-pages.yml"
+check T-006 "robots.txt exists"            test -f "$site/robots.txt"
+check T-007 "sitemap.xml exists"           test -f "$site/sitemap.xml"
+
+# --- T-010 .. T-017: page head and structure ----------------------------
+check T-010 "has an html5 doctype"         grep -qi '^<!DOCTYPE html>' "$index"
+check T-011 "has a <title>"                grep -q '<title>.*PicklesToys.*</title>' "$index"
+check T-012 "has viewport meta (mobile)"   grep -q 'name="viewport"' "$index"
+check T-013 "has meta description"         grep -q 'name="description"' "$index"
+check T-014 "links styles.css"             grep -q 'href="styles.css"' "$index"
+check T-015 "links app.js"                 grep -q 'src="app.js"' "$index"
+check T-016 "skip-to-content link"         grep -q 'class="skip-link"' "$index"
+check T-017 "canonical url is the apex"    grep -q 'rel="canonical" href="https://picklestoys.com/"' "$index"
+
+# --- T-020 .. T-023: every section the nav promises is present ----------
+check T-020 "what section present"         grep -q 'id="what"' "$index"
+check T-021 "look section present"         grep -q 'id="look"' "$index"
+check T-022 "news section present"         grep -q 'id="news"' "$index"
+check T-023 "every nav link resolves" bash -c '
+  for href in $(grep -o "class=\"nav__links\"" -A 6 "'"$index"'" | grep -o "href=\"#[a-z]*\"" | cut -d\" -f2); do
+    id="${href#\#}";
+    grep -q "id=\"$id\"" "'"$index"'" || { echo "dangling nav link: $href"; exit 1; };
+  done
+'
+
+# --- T-030 .. T-034: the page states only what is true today ------------
+# The business has no products, prices, or launch date yet. These assertions
+# exist so a future edit cannot quietly add invented commerce copy: the site
+# must keep saying it is not open until someone deliberately changes a test.
+check T-030 "states it is not open yet"    grep -qi 'not open yet' "$index"
+check T-031 "describes handmade toys"      grep -qi 'handmade' "$index"
+check T-032 "describes small batches"      grep -qi 'small batch' "$index"
+check T-033 "no invented prices" bash -c '
+  ! grep -qE "\\\$[0-9]" "'"$index"'"
+'
+check T-034 "no shop or cart claims" bash -c '
+  ! grep -qiE "add to cart|buy now|checkout|pre-?order now" "'"$index"'"
+'
+
+# --- T-040 .. T-042: intellectual-property guardrails -------------------
+# The aesthetic is 90s-cartoon-era inspired. Naming another company's show,
+# characters, or marks would turn homage into infringement, so the page must
+# never contain them and must carry the non-affiliation line. See docs/BRAND.md.
+check T-040 "no third-party franchise or character names" bash -c '
+  ! grep -qiE "rugrats|nickelodeon|nicktoon|reptar|tommy pickles|chuckie|paramount|viacom|angelica|spumco|ren & stimpy|hey arnold" "'"$index"'"
+'
+check T-041 "non-affiliation disclaimer present" bash -c '
+  grep -qi "not affiliated" "'"$index"'"
+'
+check T-042 "brand boundary is documented"  test -f "$root/docs/BRAND.md"
+
+# --- T-050 .. T-053: placeholders are marked, never invented ------------
+# Real-world facts (email, socials, prices, dates) are the owner to provide.
+# A placeholder must be visibly a placeholder; an invented address that
+# bounces is worse than none at all.
+check T-050 "contact placeholder is marked" bash -c '
+  grep -q "CONTACT-EMAIL-TBD" "'"$index"'" || grep -q "mailto:" "'"$index"'"
+'
+check T-051 "a marked TBD is visually flagged" bash -c '
+  if grep -q "CONTACT-EMAIL-TBD" "'"$index"'"; then
+    grep -q "class=\"tbd\"" "'"$index"'";
+  fi
+'
+check T-052 "no placeholder social handles" bash -c '
+  ! grep -qiE "@yourhandle|instagram.com/TBD|example.com" "'"$index"'"
+'
+check T-053 "no lorem ipsum" bash -c '
+  ! grep -qi "lorem ipsum" "'"$index"'" "'"$site"'/404.html"
+'
+
+# --- T-060 .. T-063: dependency-free, per constitution Principle 7 ------
+# Absolute URLs to picklestoys.com itself are fine and expected (canonical,
+# og:url, sitemap). What must never appear is a resource fetched from another
+# origin — that is the dependency the constitution forbids.
+check T-060 "no external resources" bash -c '
+  offenders=$(grep -oE "(src|href)=\"https?://[^\"]*" "'"$index"'" "'"$site"'/404.html" |
+    grep -v "picklestoys\.com" || true);
+  [ -z "$offenders" ] || { echo "$offenders"; exit 1; }
+'
+check T-061 "no package.json in site/"     test ! -f "$site/package.json"
+check T-062 "no @import of remote css" bash -c '
+  ! grep -qE "@import[^;]*https?://" "'"$site"'/styles.css"
+'
+check T-063 "no external fonts" bash -c '
+  ! grep -qiE "fonts.googleapis|fonts.gstatic|@font-face" "'"$site"'/styles.css"
+'
+
+# --- T-070 .. T-074: theming and accessibility --------------------------
+check T-070 "theme toggle button present"  grep -q 'id="themeToggle"' "$index"
+check T-071 "pre-paint theme script"       grep -q 'pickles-theme' "$index"
+check T-072 "dark mode tokens defined"     grep -q 'prefers-color-scheme: dark' "$site/styles.css"
+check T-073 "reduced motion respected"     grep -q 'prefers-reduced-motion' "$site/styles.css"
+check T-074 "landmarks and skip target" bash -c '
+  grep -q "<main id=\"main\">" "'"$index"'" &&
+  grep -q "href=\"#main\"" "'"$index"'"
+'
+# Without JS the reveal animation must not hide content: the opacity rule is
+# scoped to .js, which only the inline head script adds.
+check T-075 "reveal degrades without JS" bash -c '
+  grep -q "^\.js \.reveal {" "'"$site"'/styles.css" &&
+  grep -q "classList.add(\"js\")" "'"$index"'"
+'
+# Contrast regression guard. The vivid --orange is 4.05:1 on the tinted band,
+# under the AA floor for 14px bold overlines, so small orange text must use
+# the darker --orange-text. Measured contrast lives in the browser suite; this
+# is the cheap structural proxy that runs on a bare CI runner.
+check T-076 "small orange text uses the AA-safe token" bash -c '
+  grep -q -- "--orange-text:" "'"$site"'/styles.css" &&
+  grep -A 8 "^\.overline {" "'"$site"'/styles.css" | grep -q "color: var(--orange-text)"
+'
+
+# --- T-080 .. T-082: publishing configuration ---------------------------
+check T-080 "CNAME names the apex domain" bash -c '
+  [ "$(tr -d "[:space:]" < "'"$site"'/CNAME")" = "picklestoys.com" ]
+'
+check T-081 "sitemap points at the live domain" bash -c '
+  grep -q "https://picklestoys.com/" "'"$site"'/sitemap.xml"
+'
+check T-082 "robots allows indexing"       grep -q 'Allow: /' "$site/robots.txt"
+
+# --- T-090 .. T-091: weight budget --------------------------------------
+# There are no images yet, so the whole page is the three core files. Keeping
+# the cap tight now means a future photo drop has to be a deliberate decision.
+check T-090 "core files under 100KB" bash -c '
+  total=$(cat "'"$index"'" "'"$site"'/styles.css" "'"$site"'/app.js" | wc -c);
+  [ "$total" -lt 102400 ] || { echo "core=$total bytes"; exit 1; }
+'
+check T-091 "no committed binaries over 400KB" bash -c '
+  find "'"$site"'" -type f -size +400k | grep . && exit 1 || exit 0
+'
+
+echo
+echo "HTML + accessibility validation"
+echo "==============================="
+if command -v python >/dev/null 2>&1; then PY=python; elif command -v python3 >/dev/null 2>&1; then PY=python3; else PY=""; fi
+if [ -n "$PY" ]; then
+  # Self-test first: a validator that cannot fail proves nothing.
+  "$PY" "$root/tests/validate_html.py" --selftest || fail=$((fail + 1))
+  "$PY" "$root/tests/validate_html.py" || fail=$((fail + 1))
+else
+  echo "  SKIP  python not available"
+fi
+
+echo "---------------------"
+echo "Passed: $pass  Failed: $fail"
+[ "$fail" -eq 0 ] || exit 1

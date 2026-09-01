@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found — PicklesToys</title>
+  <meta name="description" content="That page does not exist on picklestoys.com.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#fbf3e4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16130f" media="(prefers-color-scheme: dark)">
+  <script>
+    // Same pre-paint theme application as index.html, so a 404 does not
+    // flash white for a reader in dark mode.
+    (function () {
+      document.documentElement.classList.add("js");
+      try {
+        var saved = localStorage.getItem("pickles-theme");
+        if (saved === "dark" || saved === "light") {
+          document.documentElement.dataset.theme = saved;
+        }
+      } catch (e) { /* private mode */ }
+    })();
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main id="main" class="notfound">
+    <div>
+      <p class="notfound__code">404</p>
+      <h1>That one is not in the jar</h1>
+      <p class="prose" style="margin-inline:auto">
+        The page you asked for does not exist. It may have been renamed, or it
+        may never have been made in the first place — most of this site has not
+        been built yet.
+      </p>
+      <p><a class="btn" href="/">Back to the front</a></p>
+    </div>
+  </main>
+</body>
+</html>
