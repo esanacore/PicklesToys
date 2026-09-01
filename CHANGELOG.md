@@ -4,6 +4,16 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.4.1 — 2026-09-01
+
+### Changed
+
+- Updated the `constitution` submodule from 1.44.1 to **1.45.0**. Caught by the
+  daily `Constitution Version Check` drift gate, not by anything in this repo.
+  All eight governance checkers pass unchanged under the new version — 1.45.0
+  adds no newly-required files — and all nine shipped workflow templates are
+  byte-identical to the copies here, so no re-sync was needed.
+
 ## 0.4.0 — 2026-08-31
 
 ### Fixed
@@ -139,7 +149,7 @@ deliberately honest placeholder rather than a preview of a shop.
   usual way this setup fails.
 - **Push-to-deploy** via `.github/workflows/deploy-pages.yml`. Tests run before
   publishing, so a failing push leaves the previous deployment up.
-- Adopted Eric's Engineering Constitution v1.44.1 as a submodule, with its
+- Adopted Eric's Engineering Constitution as a submodule, with its
   eight CI gates.
 
 ### Notes

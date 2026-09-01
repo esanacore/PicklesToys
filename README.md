@@ -4,7 +4,7 @@
 [![Eric's Engineering Constitution](https://img.shields.io/badge/Eric's%20Engineering%20Constitution-Adopted-blue)](https://github.com/esanacore/engineering-constitution)
 <!-- CONSTITUTION_END -->
 
-Current version: **0.4.0** · Domain: **picklestoys.com** (registered, not yet
+Current version: **0.4.1** · Domain: **picklestoys.com** (registered, not yet
 pointed at this site — see `docs/DOMAIN_SETUP.md`)
 
 The website for **PicklesToys** — a handmade, small-batch toy workshop in the

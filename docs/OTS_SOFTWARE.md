@@ -54,7 +54,7 @@ HTML, CSS, and JavaScript written in this repository.
 | OTS-107 | Python (standard library only) | 3.8+ | Python Software Foundation | Runs `tests/validate_html.py`; not shipped to readers | Low | Validator carries a self-test proving it can fail | CPython security releases — last reviewed 2026-08-31 | Whatever the runner or developer provides | Active |
 | OTS-108 | Bash + coreutils | Any modern | GNU / distro | Runs `tests/test_site.sh`; not shipped to readers | Low | Suite runs clean on the CI runner and on Git Bash for Windows | Distro advisories — last reviewed 2026-08-31 | Whatever the runner or developer provides | Active |
 | OTS-110 | gstack browse (headless Chromium via Playwright) | Local install | garrytan/gstack + Playwright | Runs `tests/test_layout.sh`; developer machines only, never shipped to readers and not required by CI | Low | The suite it drives caught a real 1.25:1 contrast defect on first run | Upstream repo and Playwright advisories — last reviewed 2026-08-31 | Developer-installed; the suite skips cleanly when absent | Active |
-| OTS-109 | Eric's Engineering Constitution | v1.44.1 | esanacore | Governance rules and CI checkers, pinned as a Git submodule | Low | Its own checkers run against this repository in CI | Upstream repository releases — last reviewed 2026-08-31 | Pinned by submodule SHA; `constitution-version` fails the build when behind | Active |
+| OTS-109 | Eric's Engineering Constitution | v1.45.0 | esanacore | Governance rules and CI checkers, pinned as a Git submodule | Low | Its own checkers run against this repository in CI | Upstream repository releases — last reviewed 2026-09-01 | Pinned by submodule SHA; `constitution-version` fails the build when behind | Active |
 
 ## Review Cadence
 
