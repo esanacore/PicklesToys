@@ -45,11 +45,23 @@ GitHub verifies the DNS, then provisions a Let's Encrypt certificate. This
 usually takes a few minutes but can take up to 24 hours. Once the certificate
 is issued, tick **Enforce HTTPS**.
 
-Note that saving a custom domain here also makes GitHub write a `CNAME` file
-into the published branch. This repo keeps `site/CNAME` in version control
-deliberately, so the domain survives a rebuild and is visible in the source
-rather than living only in a settings page. Keep the two in agreement — if the
-domain ever changes, change `site/CNAME` too or `T-080` fails.
+**This step is required, not optional.** With an Actions-based deploy (as
+opposed to the older publish-from-a-branch mode), the `CNAME` file inside the
+uploaded artifact does **not** register the custom domain by itself. Verified
+on this repository: after the first successful deploy with `site/CNAME`
+present and containing `picklestoys.com`, the API still reported
+`"cname": null`. The Settings value is the authoritative one.
+
+`site/CNAME` is still kept in version control deliberately — it travels with
+the artifact, documents the intended domain in the source rather than only in
+a settings page, and is asserted by `T-080`. Keep the two in agreement: if the
+domain ever changes, change `site/CNAME` too or the test fails.
+
+Check which state you are in with:
+
+```bash
+gh api repos/esanacore/PicklesToys/pages --jq '{cname: .cname, status: .status}'
+```
 
 ## 3. Verify
 

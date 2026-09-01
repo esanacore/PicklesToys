@@ -16,12 +16,14 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
 
 ## Launch the site at the domain
 
-- [ ] Enable GitHub Pages: Settings → Pages → Source: **GitHub Actions**.
-      One-time; the deploy workflow fails without it.
+- [x] Enable GitHub Pages (Source: **GitHub Actions**). Done 2026-08-31; the
+      site is live at https://esanacore.github.io/PicklesToys/.
 - [ ] Create the four A records and the `www` CNAME (`docs/DOMAIN_SETUP.md`).
       On Cloudflare these must be **grey-cloud / DNS-only**.
 - [ ] Set the custom domain in Settings → Pages, then enable **Enforce HTTPS**
-      once the certificate is issued.
+      once the certificate is issued. Required even though `site/CNAME` exists:
+      with an Actions-based deploy the artifact's CNAME file does not register
+      the domain on its own (confirmed — the API still reports `cname: null`).
 - [ ] Verify with `dig` and `curl` per `docs/DOMAIN_SETUP.md` step 3.
 
 ## Site work
