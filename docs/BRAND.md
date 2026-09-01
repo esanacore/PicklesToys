@@ -92,6 +92,25 @@ Note the jar is a generic object, deliberately. It is a visual pun on the name
 and owes nothing to anyone else's character design — which is the whole point
 of the boundary above.
 
+## The social card
+
+`site/og-image.svg` is the 1200x630 card a link unfurls into — the size
+Facebook, LinkedIn, Slack, iMessage, and X all crop from. It reuses the page's
+own vocabulary: cream paper, halftone, the jar badge, the two-line headline
+with a hand-drawn highlight under the phrase that carries the meaning, and the
+status pill. It says the business is not open, for the same reason the page
+does.
+
+`site/og-image.png` is rendered from it by `tools/make_og_image.py`. **Edit
+the SVG, then re-run the script** — the PNG exists only because og:image is
+not accepted as SVG by most platforms.
+
+Two layout rules worth keeping if the card is redesigned: keep everything
+inside a 72px margin, since several platforms crop to 1.91:1 and some chat
+clients round the corners; and check text metrics rather than estimating them.
+The first draft here had a status pill narrower than its own label, which is
+invisible in source and obvious the moment it renders.
+
 ## Typography
 
 System fonts only. The constitution forbids external dependencies

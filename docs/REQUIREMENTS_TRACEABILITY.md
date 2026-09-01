@@ -32,6 +32,7 @@ A requirement with no verifying test is a coverage gap. Record it in `docs/TEST_
 | FR-007 | MUST | Publishing config targets the apex domain consistently | FR-007-AC-1 | T-017, T-080, T-081, T-082 | Verified |
 | FR-008 | SHOULD | Themed, non-indexed 404 page | FR-008-AC-1 | T-004, V-001..V-010 (404.html validated) | Verified |
 | FR-010 | SHOULD | The site presents a recognisable icon in browser chrome | FR-010-AC-1, FR-010-AC-2 | T-092, T-093, T-094, T-095, T-096 | Verified |
+| FR-011 | SHOULD | A shared link unfurls with a branded preview card | FR-011-AC-1, FR-011-AC-2 | T-097, T-098, T-099, T-100, T-101 | Verified |
 | FR-009 | WON'T | Online sales are out of scope this release | FR-009-AC-1 | T-034 (asserts no cart or checkout copy exists) | Verified |
 
 ## Non-Functional Requirements

@@ -215,6 +215,41 @@ fi
 # is every machine here — the repo is deliberately dependency-free.
 check T-096 "favicon generator is committed"  test -f "$root/tools/make_favicon.py"
 
+# --- T-097 .. T-100: social sharing card --------------------------------
+check T-097 "og-image source and raster exist" bash -c '
+  test -f "'"$site"'/og-image.svg" && test -f "'"$site"'/og-image.png"
+'
+# og:image is spec-required to be an absolute URL, and must agree with the
+# canonical host or the unfurl attributes to the wrong site.
+check T-098 "og:image is absolute and on the canonical host" bash -c '
+  grep -q "property=\"og:image\" content=\"https://picklestoys.com/og-image.png\"" "'"$index"'" &&
+  grep -q "name=\"twitter:image\" content=\"https://picklestoys.com/og-image.png\"" "'"$index"'"
+'
+# Declared dimensions must match the file, or previews letterbox and crop
+# wrongly on the platforms that trust the tags over the bytes.
+check T-099 "declared og dimensions match the PNG" bash -c '
+  grep -q "og:image:width\" content=\"1200\"" "'"$index"'" &&
+  grep -q "og:image:height\" content=\"630\"" "'"$index"'" &&
+  grep -q "twitter:card\" content=\"summary_large_image\"" "'"$index"'"
+'
+if [ -z "$PY" ]; then
+  echo "  SKIP  T-100  og-image raster validation (no python available)"
+else
+check T-100 "og-image.png is 1200x630 and within platform limits" bash -c '
+  "'"$PY"'" - "'"$site"'" <<'"'"'EOF'"'"'
+import struct, sys
+from pathlib import Path
+png = (Path(sys.argv[1]) / "og-image.png").read_bytes()
+assert png[:8] == b"\x89PNG\r\n\x1a\n", "og-image.png is not a PNG"
+w, h = struct.unpack(">II", png[16:24])
+assert (w, h) == (1200, 630), f"og-image.png is {w}x{h}, expected 1200x630"
+# WhatsApp is the tightest mainstream consumer at ~300KB; stay well under.
+assert len(png) < 300_000, f"og-image.png is {len(png)} bytes, over the 300KB budget"
+EOF
+'
+fi
+check T-101 "og-image generator is committed"  test -f "$root/tools/make_og_image.py"
+
 echo
 echo "HTML + accessibility validation"
 echo "==============================="

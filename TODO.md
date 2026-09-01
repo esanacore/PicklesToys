@@ -28,8 +28,10 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
 
 ## Site work
 
-- [ ] **Add an `og:image`.** Deliberately omitted for now: a tag pointing at a
-      missing file unfurls worse than no tag. Needs one real image first.
+- [x] **`og:image`.** Done 2026-08-31. `site/og-image.svg` is the source;
+      `og-image.png` (1200x630) is rendered from it by `tools/make_og_image.py`.
+      **Note the URLs only resolve once DNS is pointed** — they are absolute and
+      on picklestoys.com, as og:image requires. Re-check the unfurl then.
 - [x] **Favicon.** Done 2026-08-31. `site/favicon.svg` is a redraw of the
       header jar simplified for 16px; `favicon.ico` and `apple-touch-icon.png`
       are generated from it by `tools/make_favicon.py` (stdlib only, no image

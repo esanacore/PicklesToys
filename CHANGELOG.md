@@ -4,6 +4,41 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.3.0 — 2026-08-31
+
+### Added
+
+- **Social sharing card.** `site/og-image.svg` is the source artwork;
+  `site/og-image.png` (1200x630, 140KB) is rendered from it. Wired up as
+  `og:image` and `twitter:image` with declared type, dimensions, and alt text,
+  and the Twitter card upgraded from `summary` to `summary_large_image`.
+- **`tools/make_og_image.py`** renders the PNG. Unlike the favicon, this card
+  contains real text, and there is no font rasteriser in the standard library —
+  so the script serves the SVG plus a small page that draws it to a canvas and
+  POSTs the PNG straight back to disk. The browser is the one renderer
+  guaranteed to be present, and the bytes never pass through a clipboard or a
+  copy-paste step, which is the part that actually goes wrong.
+- Five new checks (`T-097`–`T-101`): source and raster exist, the URLs are
+  absolute and on the canonical host, the declared dimensions match the file,
+  the PNG really is 1200x630 and under a 300KB budget, and the generator stays
+  committed.
+
+### Notes
+
+- **The `og:image` URLs will not resolve until DNS is pointed at the site.**
+  They are absolute and on `picklestoys.com`, because og:image requires an
+  absolute URL and it must agree with the canonical host. Pointing them at the
+  temporary `github.io` URL instead would bake the wrong host into every
+  cached unfurl, and crawlers cache aggressively. A link shared before DNS
+  lands simply unfurls without an image.
+- The card's layout was corrected against measured text metrics rather than
+  estimated ones: the status pill was 470px wide for a label that measures
+  467px starting at x=140, so the text was overflowing its own pill, and the
+  highlight stroke ended mid-word instead of under the phrase it emphasises.
+- The 140KB weight is mostly the halftone dot pattern, which is
+  high-frequency noise that PNG cannot compress. It is well within every
+  platform limit and is fetched by crawlers, not by readers of the page.
+
 ## 0.2.0 — 2026-08-31
 
 ### Added
