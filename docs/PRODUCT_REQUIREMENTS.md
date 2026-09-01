@@ -148,6 +148,13 @@ requirements below exist specifically to keep that true as the site is edited.
 - Acceptance criteria:
   - `NFR-006-AC-1`: the three core files total under 100KB, and no committed asset exceeds 400KB.
 
+**NFR-007** The layout holds at both phone and desktop widths, in both themes.
+
+- Level: `SHOULD`
+- Acceptance criteria:
+  - `NFR-007-AC-1`: the page never scrolls horizontally, and no content box extends past the viewport, at 375px and 1280px in light and dark.
+  - `NFR-007-AC-2`: no rendered text is smaller than 12px.
+
 ## Out of Scope for This Release
 
 **FR-009** Online sales, cart, checkout, or payment processing.

@@ -41,13 +41,14 @@ A requirement with no verifying test is a coverage gap. Record it in `docs/TEST_
 | --- | --- | --- | --- | --- | --- |
 | NFR-001 | MUST | No runtime dependencies | NFR-001-AC-1 | T-060, T-061, T-062, T-063 | Verified |
 | NFR-002 | MUST | Light/dark theming, OS-following, persisted, no flash | NFR-002-AC-1, NFR-002-AC-2 | T-070, T-071, T-072 | Verified |
-| NFR-003 | MUST | WCAG AA text contrast in both themes | NFR-003-AC-1, NFR-003-AC-2 | T-076 (token wiring); measured ratios recorded in `docs/BRAND.md` — automating that measurement is still outstanding, logged in the coverage table below | In Progress |
+| NFR-003 | MUST | WCAG AA text contrast in both themes | NFR-003-AC-1, NFR-003-AC-2 | T-076, T-077 (token wiring, structural); L-010-2, L-020-2, L-030-2, L-040-2 (measured in-browser, both themes, both widths) | Verified |
 | NFR-004 | MUST | Keyboard and screen-reader navigable | NFR-004-AC-1, NFR-004-AC-2 | T-016, T-074, V-002, V-003, V-005, V-006, V-007, V-008, V-009, V-010 | Verified |
 | NFR-005 | MUST | Respects reduced motion; works without JavaScript | NFR-005-AC-1, NFR-005-AC-2 | T-073, T-075 | Verified |
 | NFR-006 | SHOULD | Page weight budget | NFR-006-AC-1 | T-090, T-091 | Verified |
+| NFR-007 | SHOULD | Layout holds at desktop and mobile widths in both themes | NFR-007-AC-1, NFR-007-AC-2 | L-0x0-3 (no horizontal scroll), L-0x0-4 (nothing escapes the viewport), L-0x0-5 (no text under 12px) | Verified |
 
 ## Coverage Gaps
 
 | Gap ID | Requirement | What is not verified automatically | Tracked in |
 | --- | --- | --- | --- |
-| GAP-001 | NFR-003-AC-1 | The measured contrast ratios are computed in a real browser and recorded in `docs/BRAND.md`, but no automated suite recomputes them. `T-076` only guards that the AA-safe token is the one wired to `.overline`, so a future change to a token *value* would not be caught. Closing this needs a browser-backed suite that skips cleanly in CI, like `702_with_the_view/tests/test_layout.sh`. | `TODO.md`, `docs/TEST_PLAN.md` |
+| GAP-003 | NFR-003-AC-1 | `tests/test_layout.sh` measures the real ratios, but skips where no browser exists — including CI. A change pushed from such a machine would not be checked. Mitigated per-defect by structural guards (`T-076`, `T-077`) that run everywhere; that mitigation covers known decisions, not new ones. | `docs/TEST_PLAN.md` |

@@ -46,6 +46,10 @@
   --dot: rgba(30, 26, 23, 0.16);
   --shadow-ink: #1e1a17;
   --on-accent: #fffaf0;
+  /* Deliberately NOT redefined per theme. --sun is a bright yellow in both
+     themes, so text on it must be dark in both; --on-accent inverts with the
+     theme and is therefore wrong here. See the .card__num note below. */
+  --on-sun: #1e1a17;
 }
 
 /* Follows the operating system unless the reader has chosen a theme,
@@ -520,7 +524,7 @@ code {
   box-shadow: 3px 3px 0 var(--shadow-ink);
 }
 
-.card--orange .card__num { background: var(--sun); }
+.card--orange .card__num { background: var(--sun); color: var(--on-sun); }
 .card--teal   .card__num { background: var(--teal); color: var(--on-accent); }
 .card--grape  .card__num { background: var(--grape); color: var(--on-accent); }
 

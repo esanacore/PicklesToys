@@ -4,7 +4,7 @@
 [![Eric's Engineering Constitution](https://img.shields.io/badge/Eric's%20Engineering%20Constitution-Adopted-blue)](https://github.com/esanacore/engineering-constitution)
 <!-- CONSTITUTION_END -->
 
-Current version: **0.3.0** · Domain: **picklestoys.com** (registered, not yet
+Current version: **0.4.0** · Domain: **picklestoys.com** (registered, not yet
 pointed at this site — see `docs/DOMAIN_SETUP.md`)
 
 The website for **PicklesToys** — a handmade, small-batch toy workshop in the
@@ -37,7 +37,7 @@ python -m http.server 8123 --directory site
 bash tests/test_site.sh
 ```
 
-57 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
+58 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
 validator (`V-xxx`) that runs on the standard library alone, so it works on a
 bare CI runner. The suite gates every deploy — if it fails, the previous
 deployment stays up.
@@ -56,6 +56,17 @@ would otherwise quietly rot:
 | `T-092`–`T-096` | Favicons exist, are linked from both pages, are structurally valid images, and their generator stays committed. |
 | `T-097`–`T-101` | The social card exists, its URLs are absolute and on the canonical host, and the declared dimensions match the actual PNG. |
 
+Plus a browser-backed suite (`tests/test_layout.sh`, `L-xxx`) that renders the
+page in headless Chromium at desktop and mobile widths in both themes, and
+measures what grep cannot see: the contrast of **every text node** against the
+colour actually painted behind it, horizontal overflow, and content escaping
+the viewport. It is chained from the structural suite and skips cleanly with
+exit 0 where no browser is installed, so CI keeps the structural suite as its
+gate.
+
+It earns its keep: on its first run it found a badge at 1.25:1 in dark mode
+that had shipped in three releases and that a careful hand-audit had missed.
+
 ## Project Structure
 
 ```text
@@ -72,6 +83,8 @@ PicklesToys/
 │   └── sitemap.xml
 ├── tests/
 │   ├── test_site.sh       ← Structural suite (T-xxx) — the CI gate
+│   ├── test_layout.sh     ← Browser suite (L-xxx); skips without a browser
+│   ├── layout_assertions.js ← Measured in-page: contrast + geometry
 │   └── validate_html.py   ← HTML + a11y validator (V-xxx), stdlib only
 ├── tools/
 │   ├── make_favicon.py    ← Regenerates the icon rasters (stdlib only)

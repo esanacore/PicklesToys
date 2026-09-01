@@ -4,6 +4,48 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.4.0 — 2026-08-31
+
+### Fixed
+
+- **The numbered badge on the first card was unreadable in dark mode.** It sets
+  a `--sun` background but no colour, so it inherited `.card__num`'s
+  `var(--ink)` — near-black in light, cream in dark. Cream on bright yellow
+  measures **1.25:1**, against a 4.5:1 floor. Shipped in 0.1.0 and present in
+  every release since.
+
+  The fix is a new `--on-sun` token, deliberately **not** redefined per theme:
+  `--sun` is a bright yellow in both themes, so text on it must be dark in
+  both. `--on-accent` inverts with the theme, which is correct for `--teal` and
+  `--grape` (they invert too) and wrong here.
+
+### Added
+
+- **`tests/test_layout.sh` + `tests/layout_assertions.js`** — browser-backed
+  layout and contrast tests (`L-xxx`), run in headless Chromium across desktop
+  and mobile widths in both themes. Chained from `tests/test_site.sh`, and
+  **skips cleanly with exit 0 where no browser exists**, so a bare CI runner
+  still has the structural suite as its gate.
+- `T-077`, a structural guard for the badge defect above, so the specific
+  regression is caught even where the browser suite skips.
+- `NFR-007`, covering layout integrity at both widths in both themes.
+
+### Notes
+
+- **The contrast suite does not take a list of selectors to check.** It walks
+  every text node on the page and measures each against its own WCAG floor
+  (3:1 for large text, 4.5:1 otherwise), compositing translucent backgrounds up
+  the ancestor chain to find the colour actually painted behind the text.
+
+  This is the whole point. The previous hand-audit checked a hand-picked list
+  of pairs, and `.card__num` was not on it — which is exactly why a 1.25:1
+  defect survived three releases. A list only ever covers what someone
+  remembered to add.
+- The suite found that defect on its first run.
+- GAP-001 and GAP-002 are closed. GAP-003 is opened in their place and is
+  honest about what remains: the browser suite skips in CI, so defects only it
+  can see are guarded per-defect by `T-076`/`T-077` rather than in general.
+
 ## 0.3.0 — 2026-08-31
 
 ### Added

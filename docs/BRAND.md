@@ -61,12 +61,26 @@ as CSS custom properties at the top of `site/styles.css`.
 | `--grape` | Grape Soda | `#66399b` | `#c39bf5` |
 | `--sun` | Lunchbox Yellow | `#f5c518` | `#ffd84d` |
 | `--lime` | Dill Green | `#4e7615` | `#a6d65e` |
+| `--on-sun` | ink for sun fills | `#1e1a17` | `#1e1a17` (same) |
 
 Light-mode accents are tuned for contrast against the cream paper background
 (`--paper`) and go muddy on near-black, which is why dark mode lifts each one
 rather than reusing the same hex. Accents used as text clear 4.5:1 against
 their own background. `--sun` is decorative only — it is a fill behind dark
 ink, never text.
+
+**`--on-sun` is the one token that does not change between themes**, and the
+reason is worth understanding before touching it. `--teal` and `--grape` invert
+with the theme — dark in light mode, light in dark mode — so text on them uses
+`--on-accent`, which inverts too. `--sun` does *not* invert: it is a bright
+yellow in both. Text on it must therefore be dark in both, which no inverting
+token can deliver.
+
+Getting this wrong is not hypothetical. The numbered badge on the first card
+set a `--sun` background and no colour, inheriting `var(--ink)`, which flips to
+cream in dark mode. Cream on bright yellow is **1.25:1**. It shipped in 0.1.0
+and survived three releases and a careful hand-audit before
+`tests/test_layout.sh` measured it. `T-077` now guards it structurally.
 
 ## The mark
 

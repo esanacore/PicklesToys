@@ -36,10 +36,14 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
       header jar simplified for 16px; `favicon.ico` and `apple-touch-icon.png`
       are generated from it by `tools/make_favicon.py` (stdlib only, no image
       toolchain). Re-run that script after editing the SVG.
-- [ ] Consider a browser-based layout/interaction suite like
-      `702_with_the_view/tests/test_layout.sh`, which skips cleanly in CI.
-      The contrast values in `docs/BRAND.md` are currently verified by hand;
-      `T-076` only guards the token, not the measured ratio.
+- [x] **Browser-based layout/contrast suite.** Done 2026-08-31 —
+      `tests/test_layout.sh`. Closed GAP-001 and GAP-002, and found a real
+      1.25:1 contrast defect on its first run.
+- [ ] **GAP-003: the browser suite skips in CI.** Contrast defects are only
+      caught on a machine with a browser. Options: run it in CI with a
+      Playwright-enabled job (adds a CI dependency this repo has so far avoided),
+      or keep adding structural guards per defect as `T-076`/`T-077` do. Low
+      risk while the page is this small; revisit if the site grows.
 
 ## Business questions worth answering before building more
 

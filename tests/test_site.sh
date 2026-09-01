@@ -152,6 +152,16 @@ check T-076 "small orange text uses the AA-safe token" bash -c '
   grep -A 8 "^\.overline {" "'"$site"'/styles.css" | grep -q "color: var(--orange-text)"
 '
 
+# The badge on the first card sits on --sun, which is a bright yellow in BOTH
+# themes, so it needs an explicit dark colour. Without one it inherits
+# .card__num's var(--ink), which flips to cream in dark mode and measures
+# 1.25:1 — shipped in 0.1.0 and caught by tests/test_layout.sh L-020-2. That
+# suite skips on CI runners, so this is the guard that runs everywhere.
+check T-077 "sun-filled badge sets an explicit dark colour" bash -c '
+  grep -q -- "--on-sun:" "'"$site"'/styles.css" &&
+  grep -q "\.card--orange \.card__num {[^}]*color: var(--on-sun)" "'"$site"'/styles.css"
+'
+
 # --- T-080 .. T-082: publishing configuration ---------------------------
 check T-080 "CNAME names the apex domain" bash -c '
   [ "$(tr -d "[:space:]" < "'"$site"'/CNAME")" = "picklestoys.com" ]
@@ -264,3 +274,13 @@ fi
 echo "---------------------"
 echo "Passed: $pass  Failed: $fail"
 [ "$fail" -eq 0 ] || exit 1
+
+# Browser-based suites. Each SKIPs cleanly where its tooling is absent (CI
+# runners have no browser), so the structural checks above remain the gate
+# that protects production. Locally they measure what grep cannot see.
+for suite in test_layout; do
+  if [ -f "$root/tests/$suite.sh" ]; then
+    echo
+    bash "$root/tests/$suite.sh"
+  fi
+done

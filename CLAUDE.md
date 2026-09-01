@@ -26,6 +26,14 @@ deploys `site/` to GitHub Pages.
   package.json. `T-060`-`T-063` enforce this.
 - Small orange text uses `--orange-text`, not `--orange` — the vivid brand
   orange is 4.05:1 on the tinted band, under the AA floor (`T-076`).
+- **Text on a `--sun` fill uses `--on-sun`, never `--ink` or `--on-accent`.**
+  `--sun` is bright yellow in *both* themes, so its text must be dark in both;
+  `--ink` and `--on-accent` invert with the theme. Getting this wrong shipped a
+  1.25:1 badge for three releases (`T-077`).
+- **Run `bash tests/test_layout.sh` after any colour or layout change.** The
+  structural suite cannot see computed colour. The browser suite measures every
+  text node; it skips silently where no browser is installed, so a green
+  `test_site.sh` alone does not mean contrast was checked.
 
 ## Branching
 
