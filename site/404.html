@@ -8,6 +8,13 @@
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#fbf3e4" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#16130f" media="(prefers-color-scheme: dark)">
+
+  <!-- Root-absolute on purpose, unlike index.html: a 404 is served for an
+       arbitrary request path, so a relative href would resolve against
+       whatever the visitor mistyped. Same reason /styles.css is absolute
+       below. -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <script>
     // Same pre-paint theme application as index.html, so a 404 does not
     // flash white for a reader in dark mode.

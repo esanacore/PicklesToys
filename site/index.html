@@ -6,6 +6,15 @@
   <title>PicklesToys — Handmade, Small-Batch Toys</title>
   <meta name="description" content="PicklesToys makes handmade, small-batch toys with a scrappy 90s-cartoon spirit. The workshop is still being built — nothing is for sale yet.">
   <link rel="canonical" href="https://picklestoys.com/">
+
+  <!-- Favicons. Relative paths, so they resolve both at the apex domain and
+       at the esanacore.github.io/PicklesToys/ project URL the site is served
+       from until DNS is pointed. The SVG is what modern browsers use; the ICO
+       is the fallback and the file crawlers request blindly. Rasters are
+       generated from the SVG by tools/make_favicon.py — do not hand-edit. -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <!-- Tints mobile browser chrome to match the page in each theme -->
   <meta name="theme-color" content="#fbf3e4" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#16130f" media="(prefers-color-scheme: dark)">

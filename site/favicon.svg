@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PicklesToys">
+  <title>PicklesToys</title>
+
+  <!--
+    Favicon mark: a simplified version of the jar in the site header.
+
+    The header jar has a lid, a glass body, two pickles, and 1.6-2px strokes.
+    That reads fine at 30px and turns to mush at 16px, which is the size that
+    actually matters in a browser tab. So this is a deliberate redraw, not an
+    export: three flat shapes, no strokes, high contrast against a filled
+    badge so it holds up on both light and dark tab bars.
+
+    Colors are the brand tokens from styles.css: Brine Orange, paper cream,
+    and Dill Green. The pickle is rotated because nothing in this identity
+    sits straight.
+  -->
+
+  <rect width="64" height="64" rx="14" fill="#c8431b"/>
+
+  <!-- Lid -->
+  <rect x="21" y="9" width="22" height="8" rx="3" fill="#fbf3e4"/>
+
+  <!-- Jar body: square shoulders, generously rounded base -->
+  <path d="M16 20h32v27c0 5-4 9-9 9H25c-5 0-9-4-9-9V20z" fill="#fbf3e4"/>
+
+  <!-- Pickle -->
+  <ellipse cx="32" cy="37" rx="7" ry="12" fill="#5e8c1e" transform="rotate(-13 32 37)"/>
+</svg>

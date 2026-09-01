@@ -68,6 +68,30 @@ rather than reusing the same hex. Accents used as text clear 4.5:1 against
 their own background. `--sun` is decorative only — it is a fill behind dark
 ink, never text.
 
+## The mark
+
+A pickle jar. It appears twice, drawn differently for each job:
+
+- **Header** (`site/index.html`, inline SVG): lid, glass body, two pickles,
+  1.6–2px ink strokes. Sits at ~30px, where that detail reads.
+- **Favicon** (`site/favicon.svg`): a redraw, not an export. Three flat shapes
+  on a filled Brine Orange badge, no strokes at all. The header version turns
+  to mush at 16px, which is the size that actually decides whether anyone
+  recognises the tab.
+
+The badge is filled rather than transparent so the mark holds contrast against
+both light and dark browser chrome.
+
+`favicon.ico` (32x32) and `apple-touch-icon.png` (180x180) are generated from
+the SVG's geometry by `tools/make_favicon.py`, which uses the standard library
+alone — there is no image toolchain in this repo and adding one would break
+`NFR-001`. **Edit the SVG, then re-run the script**; do not hand-edit the
+rasters, they will be overwritten.
+
+Note the jar is a generic object, deliberately. It is a visual pun on the name
+and owes nothing to anyone else's character design — which is the whole point
+of the boundary above.
+
 ## Typography
 
 System fonts only. The constitution forbids external dependencies

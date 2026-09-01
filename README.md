@@ -4,7 +4,7 @@
 [![Eric's Engineering Constitution](https://img.shields.io/badge/Eric's%20Engineering%20Constitution-Adopted-blue)](https://github.com/esanacore/engineering-constitution)
 <!-- CONSTITUTION_END -->
 
-Current version: **0.1.0** · Domain: **picklestoys.com** (registered, not yet
+Current version: **0.2.0** · Domain: **picklestoys.com** (registered, not yet
 pointed at this site — see `docs/DOMAIN_SETUP.md`)
 
 The website for **PicklesToys** — a handmade, small-batch toy workshop in the
@@ -37,7 +37,7 @@ python -m http.server 8123 --directory site
 bash tests/test_site.sh
 ```
 
-47 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
+52 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
 validator (`V-xxx`) that runs on the standard library alone, so it works on a
 bare CI runner. The suite gates every deploy — if it fails, the previous
 deployment stays up.
@@ -53,6 +53,7 @@ would otherwise quietly rot:
 | `T-060`–`T-063` | `site/` stays dependency-free: no CDN, no external font, no package.json. |
 | `T-070`–`T-076` | Theme toggle, reduced-motion support, no-JS degradation, and the AA-safe color token for small orange text. |
 | `T-080`–`T-091` | Publishing config (CNAME, sitemap, robots) and the page-weight budget. |
+| `T-092`–`T-096` | Favicons exist, are linked from both pages, are structurally valid images, and their generator stays committed. |
 
 ## Project Structure
 
@@ -63,12 +64,15 @@ PicklesToys/
 │   ├── 404.html           ← Themed not-found page
 │   ├── styles.css         ← Design system (color tokens, layout)
 │   ├── app.js             ← Theme toggle, scroll reveal, scrollspy
+│   ├── favicon.svg        ← Icon; .ico and apple-touch are generated from it
 │   ├── CNAME              ← Custom domain, kept in version control
 │   ├── robots.txt
 │   └── sitemap.xml
 ├── tests/
 │   ├── test_site.sh       ← Structural suite (T-xxx) — the CI gate
 │   └── validate_html.py   ← HTML + a11y validator (V-xxx), stdlib only
+├── tools/
+│   └── make_favicon.py    ← Regenerates the icon rasters (stdlib only)
 ├── docs/                  ← Governance and project documentation
 │   ├── BRAND.md           ← Design language and the IP boundary
 │   ├── DOMAIN_SETUP.md    ← Pointing picklestoys.com at GitHub Pages

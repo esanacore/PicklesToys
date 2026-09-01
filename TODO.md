@@ -30,8 +30,10 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
 
 - [ ] **Add an `og:image`.** Deliberately omitted for now: a tag pointing at a
       missing file unfurls worse than no tag. Needs one real image first.
-- [ ] **Favicon.** Same reasoning — the jar mark in the header is inline SVG
-      and could be exported, but that is a design decision, not a mechanical one.
+- [x] **Favicon.** Done 2026-08-31. `site/favicon.svg` is a redraw of the
+      header jar simplified for 16px; `favicon.ico` and `apple-touch-icon.png`
+      are generated from it by `tools/make_favicon.py` (stdlib only, no image
+      toolchain). Re-run that script after editing the SVG.
 - [ ] Consider a browser-based layout/interaction suite like
       `702_with_the_view/tests/test_layout.sh`, which skips cleanly in CI.
       The contrast values in `docs/BRAND.md` are currently verified by hand;

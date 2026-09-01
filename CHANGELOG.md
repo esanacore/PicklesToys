@@ -4,6 +4,35 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.2.0 — 2026-08-31
+
+### Added
+
+- **Favicon.** `site/favicon.svg` plus a 32x32 `favicon.ico` and a 180x180
+  `apple-touch-icon.png`, linked from both `index.html` and `404.html`.
+- **`tools/make_favicon.py`** generates the rasters from the SVG's geometry
+  using the standard library alone — no Pillow, no cairosvg, no image
+  toolchain, because the repo is deliberately dependency-free. It draws the
+  three shapes with 4x4 supersampled coverage and writes the PNG and ICO
+  containers by hand. Re-run it after editing the SVG.
+- Five new checks (`T-092`–`T-096`): the icon files exist, both pages link
+  them, the 404's hrefs are root-absolute, the rasters are structurally valid
+  images of the right dimensions, and the generator stays committed.
+
+### Notes
+
+- The favicon is a **redraw** of the header jar, not an export of it. The
+  header mark has a lid, a glass body, two pickles, and 1.6–2px strokes, which
+  reads at 30px and turns to mush at 16px — the size that actually matters in
+  a browser tab. The favicon drops to three flat shapes with no strokes on a
+  filled badge, so it holds contrast on both light and dark tab bars.
+- `index.html` uses relative icon hrefs so they resolve both at the apex domain
+  and at the `github.io/PicklesToys/` project URL. `404.html` uses
+  root-absolute hrefs because a 404 is served for an arbitrary request path,
+  where a relative href would resolve against whatever the visitor mistyped.
+- `apple-touch-icon.png` is written opaque: iOS discards alpha and composites
+  on black, so transparent edges would fringe.
+
 ## 0.1.0 — 2026-08-31
 
 First commit of the site. The business has not launched, so this release is a

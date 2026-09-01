@@ -15,6 +15,11 @@ index="$site/index.html"
 pass=0
 fail=0
 
+# Detected up front rather than at the validator: T-095 needs it too.
+if command -v python >/dev/null 2>&1; then PY=python
+elif command -v python3 >/dev/null 2>&1; then PY=python3
+else PY=""; fi
+
 check() {
   # check <test-id> <description> <command...>
   local id="$1" desc="$2"
@@ -167,10 +172,52 @@ check T-091 "no committed binaries over 400KB" bash -c '
   find "'"$site"'" -type f -size +400k | grep . && exit 1 || exit 0
 '
 
+# --- T-092 .. T-096: favicon -------------------------------------------
+check T-092 "favicon files exist" bash -c '
+  test -f "'"$site"'/favicon.svg" &&
+  test -f "'"$site"'/favicon.ico" &&
+  test -f "'"$site"'/apple-touch-icon.png"
+'
+check T-093 "index links all three icons" bash -c '
+  grep -q "rel=\"icon\" href=\"favicon.ico\"" "'"$index"'" &&
+  grep -q "rel=\"icon\" href=\"favicon.svg\"" "'"$index"'" &&
+  grep -q "rel=\"apple-touch-icon\" href=\"apple-touch-icon.png\"" "'"$index"'"
+'
+# A 404 is served for an arbitrary request path, so its asset hrefs must be
+# root-absolute or they resolve against whatever the visitor mistyped.
+check T-094 "404 icon links are root-absolute" bash -c '
+  grep -q "rel=\"icon\" href=\"/favicon.ico\"" "'"$site"'/404.html" &&
+  grep -q "rel=\"icon\" href=\"/favicon.svg\"" "'"$site"'/404.html"
+'
+if [ -z "$PY" ]; then
+  echo "  SKIP  T-095  raster validation (no python available)"
+else
+check T-095 "rasters are real, well-formed images" bash -c '
+  "'"$PY"'" - "'"$site"'" <<'"'"'EOF'"'"'
+import struct, sys
+from pathlib import Path
+site = Path(sys.argv[1])
+png = (site / "apple-touch-icon.png").read_bytes()
+assert png[:8] == b"\x89PNG\r\n\x1a\n", "apple-touch-icon is not a PNG"
+w, h = struct.unpack(">II", png[16:24])
+assert (w, h) == (180, 180), f"apple-touch-icon is {w}x{h}, expected 180x180"
+ico = (site / "favicon.ico").read_bytes()
+reserved, kind, count = struct.unpack("<HHH", ico[:6])
+assert (reserved, kind) == (0, 1) and count >= 1, "favicon.ico header is malformed"
+bw, bh, _, _, _, _, size, off = struct.unpack("<BBBBHHII", ico[6:22])
+assert (bw or 256, bh or 256) == (32, 32), f"favicon.ico is {bw}x{bh}, expected 32x32"
+assert off + size == len(ico), "favicon.ico length does not match its directory entry"
+EOF
+'
+fi
+# The rasters are generated, not drawn by hand. Losing the generator would
+# make the icons unreproducible on a machine with no image toolchain, which
+# is every machine here — the repo is deliberately dependency-free.
+check T-096 "favicon generator is committed"  test -f "$root/tools/make_favicon.py"
+
 echo
 echo "HTML + accessibility validation"
 echo "==============================="
-if command -v python >/dev/null 2>&1; then PY=python; elif command -v python3 >/dev/null 2>&1; then PY=python3; else PY=""; fi
 if [ -n "$PY" ]; then
   # Self-test first: a validator that cannot fail proves nothing.
   "$PY" "$root/tests/validate_html.py" --selftest || fail=$((fail + 1))

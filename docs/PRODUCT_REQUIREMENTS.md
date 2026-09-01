@@ -92,6 +92,13 @@ requirements below exist specifically to keep that true as the site is edited.
 - Acceptance criteria:
   - `FR-008-AC-1`: `site/404.html` exists and shares the site styling.
 
+**FR-010** The site presents a recognisable icon in browser chrome.
+
+- Level: `SHOULD`
+- Acceptance criteria:
+  - `FR-010-AC-1`: an SVG icon, an ICO fallback, and an apple-touch icon exist and are linked from both published pages.
+  - `FR-010-AC-2`: the rasters are generated from the SVG by a committed, dependency-free script rather than hand-produced, so they can be regenerated after a design change.
+
 ## Non-Functional Requirements
 
 **NFR-001** The site has no runtime dependencies.
