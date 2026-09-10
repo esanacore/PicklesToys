@@ -9,74 +9,57 @@
     og:image will not accept SVG on most platforms, which is the only reason a
     PNG exists at all.
 
-    Layout keeps every element inside a 72px margin, because several platforms
-    crop this to 1.91:1 and some chat clients round the corners.
-
-    Type is the system stack, matching styles.css. No webfont: the site is
-    dependency-free by policy, and a card that renders differently on the
-    machine that generates it is not worth the dependency anyway.
+    The burst polygon and the doodle marks are the same shapes the page uses —
+    both come from tools/make_pattern.py, so the card cannot drift away from
+    the site's own vocabulary. Layout keeps every element inside a 72px margin,
+    because several platforms crop this to 1.91:1 and some chat clients round
+    the corners.
   -->
 
-  <defs>
-    <!-- Halftone: the era's printing artifact, same as the page background -->
-    <pattern id="halftone" width="14" height="14" patternUnits="userSpaceOnUse">
-      <circle cx="1.5" cy="1.5" r="1.5" fill="#1e1a17" fill-opacity="0.16"/>
-    </pattern>
-
-    <clipPath id="frame">
-      <rect width="1200" height="630"/>
-    </clipPath>
-  </defs>
+  <clipPath id="frame"><rect width="1200" height="630"/></clipPath>
 
   <g clip-path="url(#frame)">
     <rect width="1200" height="630" fill="#fbf3e4"/>
-    <rect width="1200" height="630" fill="url(#halftone)"/>
 
-    <!-- Blobs, echoing the hero. Lumpy on both axes so they do not read as
-         circles; ellipse plus rotation is the closest SVG equivalent of the
-         CSS asymmetric border-radius used on the page. -->
-    <g opacity="0.5" stroke="#1e1a17" stroke-width="3">
-      <ellipse cx="1108" cy="86" rx="190" ry="168" fill="#f5c518" transform="rotate(-8 1108 86)"/>
-      <ellipse cx="10" cy="664" rx="132" ry="144" fill="#0e6f6b" transform="rotate(12 10 664)"/>
-      <ellipse cx="1150" cy="614" rx="86" ry="92" fill="#66399b" transform="rotate(-20 1150 614)"/>
-    </g>
+    <!-- Doodle field: the scribbled ground the title card sits on. -->
+    <g stroke="#1e1a17" stroke-width="1.8" stroke-linecap="round" fill="#1e1a17" opacity="0.16"><g transform="translate(1170,158) rotate(201) scale(0.93)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(608,209) rotate(268) scale(1.26)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(62,425) rotate(176) scale(0.70)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(430,487) rotate(108) scale(1.41)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(513,539) rotate(192) scale(1.60)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(959,567) rotate(153) scale(1.46)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(1084,529) rotate(147) scale(1.39)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(369,61) rotate(262) scale(0.98)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(126,382) rotate(260) scale(0.87)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(558,97) rotate(117) scale(0.99)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(1072,534) rotate(32) scale(0.73)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(803,0) rotate(18) scale(1.28)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(1193,175) rotate(113) scale(1.32)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(665,60) rotate(43) scale(0.92)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(551,71) rotate(79) scale(0.77)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(537,108) rotate(64) scale(0.72)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(208,90) rotate(119) scale(1.46)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(623,272) rotate(154) scale(0.82)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(81,559) rotate(292) scale(1.22)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(1163,509) rotate(293) scale(1.43)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(877,108) rotate(298) scale(1.51)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(251,362) rotate(136) scale(0.73)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(51,130) rotate(275) scale(1.34)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(799,319) rotate(112) scale(0.73)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(141,313) rotate(289) scale(1.41)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(25,615) rotate(38) scale(0.86)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(692,337) rotate(346) scale(1.49)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(682,567) rotate(299) scale(1.16)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(849,49) rotate(115) scale(1.14)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(461,283) rotate(187) scale(1.21)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(946,431) rotate(163) scale(1.44)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(406,515) rotate(281) scale(1.53)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(705,483) rotate(131) scale(0.75)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(58,229) rotate(322) scale(1.60)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(1187,528) rotate(167) scale(0.79)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(1110,621) rotate(257) scale(1.22)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(1001,152) rotate(160) scale(0.89)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(1044,535) rotate(46) scale(0.76)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(645,477) rotate(92) scale(0.76)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(189,331) rotate(56) scale(1.19)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(948,315) rotate(349) scale(0.77)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(64,253) rotate(268) scale(1.18)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(1108,305) rotate(29) scale(1.44)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(1048,481) rotate(21) scale(1.20)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(144,551) rotate(310) scale(0.89)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(64,341) rotate(352) scale(1.54)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(1174,93) rotate(289) scale(1.49)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(469,88) rotate(297) scale(1.41)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(775,478) rotate(13) scale(1.00)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(693,246) rotate(174) scale(0.96)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(415,423) rotate(319) scale(1.15)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(499,123) rotate(48) scale(1.16)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(282,319) rotate(220) scale(0.86)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(499,218) rotate(200) scale(1.05)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(727,310) rotate(286) scale(1.41)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(846,593) rotate(349) scale(0.77)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(312,142) rotate(1) scale(1.11)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(30,126) rotate(312) scale(1.51)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(826,358) rotate(34) scale(0.83)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(87,63) rotate(225) scale(1.40)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(463,235) rotate(116) scale(1.54)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(108,239) rotate(46) scale(1.05)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(581,208) rotate(256) scale(1.37)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(660,622) rotate(205) scale(1.32)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(850,253) rotate(242) scale(1.52)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(604,108) rotate(63) scale(1.55)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(918,199) rotate(66) scale(1.50)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(963,44) rotate(155) scale(1.00)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(609,558) rotate(89) scale(1.37)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(571,62) rotate(136) scale(1.53)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(998,405) rotate(308) scale(1.24)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(127,270) rotate(182) scale(1.51)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(155,528) rotate(146) scale(0.94)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(865,513) rotate(140) scale(0.83)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(614,378) rotate(121) scale(1.38)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(576,433) rotate(196) scale(0.89)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(917,100) rotate(24) scale(0.76)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(1110,104) rotate(218) scale(1.16)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(490,600) rotate(251) scale(1.23)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(953,83) rotate(255) scale(1.56)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(161,281) rotate(34) scale(0.74)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(1142,206) rotate(326) scale(1.41)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(641,498) rotate(70) scale(1.06)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(1120,36) rotate(352) scale(1.19)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(436,370) rotate(199) scale(1.50)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(580,74) rotate(172) scale(0.83)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(871,625) rotate(192) scale(1.45)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(416,388) rotate(133) scale(1.45)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(634,547) rotate(349) scale(0.76)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(71,583) rotate(302) scale(1.22)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(566,401) rotate(330) scale(1.57)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(664,411) rotate(274) scale(1.15)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(820,323) rotate(4) scale(1.32)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(840,539) rotate(129) scale(1.09)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(72,590) rotate(160) scale(0.76)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(534,201) rotate(75) scale(1.43)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(410,573) rotate(72) scale(1.06)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(704,626) rotate(314) scale(1.27)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(200,332) rotate(201) scale(1.58)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(545,299) rotate(357) scale(0.74)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(855,581) rotate(201) scale(1.50)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(590,595) rotate(71) scale(0.82)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(344,116) rotate(218) scale(0.89)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(1097,90) rotate(297) scale(1.48)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(214,19) rotate(120) scale(1.52)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(1086,14) rotate(241) scale(1.60)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(784,193) rotate(274) scale(0.98)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(245,329) rotate(346) scale(1.10)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(964,145) rotate(69) scale(1.49)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(96,455) rotate(348) scale(1.55)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(623,455) rotate(305) scale(0.85)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(581,217) rotate(34) scale(1.50)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(1046,569) rotate(185) scale(0.97)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(512,248) rotate(309) scale(0.96)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(1150,423) rotate(274) scale(0.89)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(143,362) rotate(119) scale(1.30)"><circle cx="0" cy="0" r="2.2" stroke="none"/></g><g transform="translate(878,72) rotate(248) scale(1.31)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(1178,141) rotate(242) scale(1.28)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(680,21) rotate(215) scale(1.28)"><path d="M-5 -5l10 10M5 -5l-10 10" fill="none"/></g><g transform="translate(132,454) rotate(224) scale(1.33)"><circle cx="0" cy="0" r="4.5" fill="none"/></g><g transform="translate(545,19) rotate(197) scale(1.36)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(1058,599) rotate(204) scale(1.40)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(851,69) rotate(248) scale(1.03)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(133,181) rotate(139) scale(1.19)"><path d="M-6 4c4-9 8 5 12-4" fill="none"/></g><g transform="translate(94,265) rotate(113) scale(0.71)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(81,579) rotate(338) scale(1.18)"><path d="M-5 -6l5 6-5 6" fill="none"/></g><g transform="translate(240,364) rotate(28) scale(1.58)"><path d="M-9 0c3-5 6 5 9 0s6-5 9 0" fill="none"/></g><g transform="translate(1032,69) rotate(102) scale(1.46)"><path d="M-7 -3q7 -6 14 0q-7 6 -14 0z" fill="none"/></g><g transform="translate(536,272) rotate(270) scale(0.78)"><path d="M0 -5v10M-5 0h10" fill="none"/></g><g transform="translate(785,249) rotate(193) scale(1.31)"><path d="M0 -5v10M-5 0h10" fill="none"/></g></g>
 
-    <!-- Jar badge: the favicon mark, scaled from its 64x64 space to 116px -->
-    <g transform="translate(72 62) scale(1.8125)">
+    <!-- Jar badge: the favicon mark, scaled from its 64x64 space -->
+    <g transform="translate(72 40) scale(1.35)">
       <rect width="64" height="64" rx="14" fill="#c8431b"/>
       <rect x="21" y="9" width="22" height="8" rx="3" fill="#fbf3e4"/>
       <path d="M16 20h32v27c0 5-4 9-9 9H25c-5 0-9-4-9-9V20z" fill="#fbf3e4"/>
       <ellipse cx="32" cy="37" rx="7" ry="12" fill="#5e8c1e" transform="rotate(-13 32 37)"/>
     </g>
 
-    <text x="212" y="146"
+    <text x="176" y="105"
           font-family="Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
-          font-size="62" font-weight="800" letter-spacing="-2" fill="#1e1a17">Pickles<tspan fill="#c8431b">Toys</tspan></text>
+          font-size="52" font-weight="800" letter-spacing="-2" fill="#1e1a17">Pickles<tspan fill="#c8431b">Toys</tspan></text>
 
-    <!-- Headline. Two lines, because the third would push into the blob. -->
-    <text x="72" y="330"
+    <!-- The title card. Outline drawn as a second, larger polygon behind the
+         fill, matching how the page builds it from two clipped layers. -->
+    <polygon points="1072.0,346.0 915.4,390.2 937.0,459.7 779.1,445.3 681.8,520.0 564.5,487.7 384.1,519.2 382.2,423.9 128.0,419.6 326.6,335.5 187.7,270.5 428.3,264.4 350.4,138.0 589.5,222.9 698.5,156.1 765.9,225.5 955.7,221.6 929.8,286.0" fill="#0e6f6b"/>
+    <polygon points="1072.0,346.0 915.4,390.2 937.0,459.7 779.1,445.3 681.8,520.0 564.5,487.7 384.1,519.2 382.2,423.9 128.0,419.6 326.6,335.5 187.7,270.5 428.3,264.4 350.4,138.0 589.5,222.9 698.5,156.1 765.9,225.5 955.7,221.6 929.8,286.0" fill="#66399b" transform="translate(600 329) scale(0.982) translate(-600 -329)"/>
+
+    <text x="600" y="308" text-anchor="middle"
           font-family="Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
-          font-size="86" font-weight="800" letter-spacing="-3" fill="#1e1a17">Handmade toys,</text>
-
-    <!-- Brush stroke under the phrase that carries the meaning, drawn before
-         the text so the ink sits on top of it. -->
-    <path d="M402 415c161-9 412-11 573-5 10 0 14 4 13 11-1 7-7 11-18 10-159-5-408-3-566 5-10 1-15-3-15-10 0-6 4-10 13-11z" fill="#f5c518"/>
-    <text x="72" y="430"
+          font-size="58" font-weight="800" letter-spacing="-1.8" fill="#fffaf0">Handmade toys,</text>
+    <text x="600" y="376" text-anchor="middle"
           font-family="Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
-          font-size="86" font-weight="800" letter-spacing="-3" fill="#1e1a17">made in small batches.</text>
+          font-size="58" font-weight="800" letter-spacing="-1.8" fill="#fffaf0">made in small batches.</text>
 
-    <!-- Status pill. Slightly off-kilter, like the one on the page. -->
-    <g transform="rotate(-1.2 72 520)">
-      <rect x="76" y="500" width="566" height="66" rx="33" fill="#1e1a17"/>
-      <rect x="72" y="496" width="566" height="66" rx="33" fill="#fffaf0" stroke="#1e1a17" stroke-width="3"/>
-      <circle cx="116" cy="529" r="9" fill="#c8431b" stroke="#1e1a17" stroke-width="3"/>
-      <text x="140" y="540"
+    <!-- Status pill, slightly off-kilter like the one on the page. -->
+    <g transform="rotate(-1.2 72 566)">
+      <rect x="76" y="546" width="566" height="60" rx="30" fill="#1e1a17"/>
+      <rect x="72" y="542" width="566" height="60" rx="30" fill="#fffaf0" stroke="#1e1a17" stroke-width="3"/>
+      <circle cx="114" cy="572" r="9" fill="#c8431b" stroke="#1e1a17" stroke-width="3"/>
+      <text x="138" y="582"
             font-family="Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
-            font-size="27" font-weight="700" fill="#1e1a17">Not open yet — still in the workshop</text>
+            font-size="26" font-weight="700" fill="#1e1a17">Not open yet — still in the workshop</text>
     </g>
 
-    <text x="1128" y="540" text-anchor="end"
+    <text x="1128" y="582" text-anchor="end"
           font-family="Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
-          font-size="27" font-weight="700" fill="#a83714">picklestoys.com</text>
+          font-size="26" font-weight="700" fill="#a83714">picklestoys.com</text>
   </g>
 </svg>

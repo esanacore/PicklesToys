@@ -29,10 +29,11 @@ A requirement with no verifying test is a coverage gap. Record it in `docs/TEST_
 | FR-004 | MUST | Unavailable facts are marked placeholders, never invented | FR-004-AC-1, FR-004-AC-2, FR-004-AC-3 | T-050, T-051, T-052, T-053 | Verified |
 | FR-005 | MUST | Era-inspired only; no third-party franchise or character names | FR-005-AC-1, FR-005-AC-2, FR-005-AC-3 | T-040, T-041, T-042 | Verified |
 | FR-006 | MUST | Push to `main` publishes, gated on tests | FR-006-AC-1 | T-005 (workflow present); the gate itself is exercised by every CI run | Verified |
-| FR-007 | MUST | Publishing config targets the apex domain consistently | FR-007-AC-1 | T-017, T-080, T-081, T-082 | Verified |
+| FR-007 | MUST | Publishing config targets the apex domain consistently | FR-007-AC-1 | T-017, T-081, T-082, T-083 | Verified |
 | FR-008 | SHOULD | Themed, non-indexed 404 page | FR-008-AC-1 | T-004, V-001..V-010 (404.html validated) | Verified |
 | FR-010 | SHOULD | The site presents a recognisable icon in browser chrome | FR-010-AC-1, FR-010-AC-2 | T-092, T-093, T-094, T-095, T-096 | Verified |
 | FR-011 | SHOULD | A shared link unfurls with a branded preview card | FR-011-AC-1, FR-011-AC-2 | T-097, T-098, T-099, T-100, T-101 | Verified |
+| FR-012 | SHOULD | Generated design assets stay reproducible from committed sources | FR-012-AC-1, FR-012-AC-2 | T-078, T-079, T-080; L-0x0-2 (measures the real ratio the card produces) | Verified |
 | FR-009 | WON'T | Online sales are out of scope this release | FR-009-AC-1 | T-034 (asserts no cart or checkout copy exists) | Verified |
 
 ## Non-Functional Requirements

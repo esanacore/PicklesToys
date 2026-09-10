@@ -4,6 +4,47 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.5.0 — 2026-09-10
+
+### Changed
+
+- **The site now uses a title-card visual language**, developed from a 90s
+  cartoon title card supplied as a reference: a torn angular burst holding the
+  words, sitting on a densely scribbled field.
+  - The page background is a **doodle field** — three seeded layers of
+    scattered marks at coprime tile sizes, so the repeat is not perceptible.
+    It replaces the halftone dots.
+  - The hero headline sits inside a **burst title card**; the three section
+    labels sit in smaller burst tags.
+  - The smooth blobs and the squiggle underline are gone. They were a rounder
+    vocabulary and reading both at once just muddled the page.
+- The social card was rebuilt in the same language, reusing the *same* burst
+  polygon and doodle marks the page uses, so the two cannot drift apart.
+
+### Added
+
+- **`tools/make_pattern.py`** generates the doodle field and the burst
+  polygons into a marked region of `styles.css`. `--check` re-derives them and
+  compares, wired up as `T-078`, so hand-editing that region fails the build
+  instead of silently drifting from its source.
+- `T-079` (generator committed) and `T-080` (the title card paints a real
+  background behind its text).
+
+### Notes
+
+- **The burst is a `clip-path` on a real background, not an SVG behind the
+  text.** The first implementation used an inline `<svg>` sibling, and the
+  browser suite immediately measured the heading at **1.00:1** — because the
+  text's actual CSS background was the cream page, not the purple shape. That
+  is not a false positive: had the SVG failed to paint, the cream text would
+  have been invisible on cream. Clipping a background-color keeps the jagged
+  edge *and* keeps the contrast real and measurable.
+- The field is ~27KB of generated CSS. Emitting each mark only where it
+  actually crosses a tile edge, rather than all nine 3x3 offsets, produced
+  byte-identical output at ~15% of the size. Core files are 59KB of the
+  100KB budget.
+- All 61 structural and 20 browser checks pass, in both themes at both widths.
+
 ## 0.4.1 — 2026-09-01
 
 ### Changed

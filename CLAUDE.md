@@ -30,6 +30,13 @@ deploys `site/` to GitHub Pages.
   `--sun` is bright yellow in *both* themes, so its text must be dark in both;
   `--ink` and `--on-accent` invert with the theme. Getting this wrong shipped a
   1.25:1 badge for three releases (`T-077`).
+- **The doodle field and burst polygons in `styles.css` are generated.** They
+  live between `BEGIN GENERATED` / `END GENERATED` markers. Edit
+  `tools/make_pattern.py` and re-run it; never hand-edit the block (`T-078`).
+- **A shape behind text is not a background.** The title card's burst is a
+  `clip-path` on a real `background-color` of an *ancestor* of the heading. An
+  SVG sibling leaves the text on the page colour — it measured 1.00:1 — and
+  would be invisible if the shape failed to paint (`T-080`).
 - **Run `bash tests/test_layout.sh` after any colour or layout change.** The
   structural suite cannot see computed colour. The browser suite measures every
   text node; it skips silently where no browser is installed, so a green

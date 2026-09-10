@@ -4,7 +4,7 @@
 [![Eric's Engineering Constitution](https://img.shields.io/badge/Eric's%20Engineering%20Constitution-Adopted-blue)](https://github.com/esanacore/engineering-constitution)
 <!-- CONSTITUTION_END -->
 
-Current version: **0.4.1** · Domain: **picklestoys.com** (registered, not yet
+Current version: **0.5.0** · Domain: **picklestoys.com** (registered, not yet
 pointed at this site — see `docs/DOMAIN_SETUP.md`)
 
 The website for **PicklesToys** — a handmade, small-batch toy workshop in the
@@ -37,7 +37,7 @@ python -m http.server 8123 --directory site
 bash tests/test_site.sh
 ```
 
-58 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
+61 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
 validator (`V-xxx`) that runs on the standard library alone, so it works on a
 bare CI runner. The suite gates every deploy — if it fails, the previous
 deployment stays up.
@@ -54,6 +54,7 @@ would otherwise quietly rot:
 | `T-070`–`T-076` | Theme toggle, reduced-motion support, no-JS degradation, and the AA-safe color token for small orange text. |
 | `T-080`–`T-091` | Publishing config (CNAME, sitemap, robots) and the page-weight budget. |
 | `T-092`–`T-096` | Favicons exist, are linked from both pages, are structurally valid images, and their generator stays committed. |
+| `T-078`–`T-080` | The generated CSS block still matches its generator, and the title card paints a real background behind its text rather than relying on a shape drawn behind it. |
 | `T-097`–`T-101` | The social card exists, its URLs are absolute and on the canonical host, and the declared dimensions match the actual PNG. |
 
 Plus a browser-backed suite (`tests/test_layout.sh`, `L-xxx`) that renders the
@@ -88,7 +89,8 @@ PicklesToys/
 │   └── validate_html.py   ← HTML + a11y validator (V-xxx), stdlib only
 ├── tools/
 │   ├── make_favicon.py    ← Regenerates the icon rasters (stdlib only)
-│   └── make_og_image.py   ← Regenerates the social card PNG
+│   ├── make_og_image.py   ← Regenerates the social card PNG
+│   └── make_pattern.py    ← Generates the doodle field + burst clip-paths
 ├── docs/                  ← Governance and project documentation
 │   ├── BRAND.md           ← Design language and the IP boundary
 │   ├── DOMAIN_SETUP.md    ← Pointing picklestoys.com at GitHub Pages

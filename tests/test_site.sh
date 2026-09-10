@@ -162,14 +162,36 @@ check T-077 "sun-filled badge sets an explicit dark colour" bash -c '
   grep -q "\.card--orange \.card__num {[^}]*color: var(--on-sun)" "'"$site"'/styles.css"
 '
 
-# --- T-080 .. T-082: publishing configuration ---------------------------
-check T-080 "CNAME names the apex domain" bash -c '
+# The doodle field and burst polygons are machine-generated into styles.css
+# between markers. --check re-derives them and compares, so a hand-edit of
+# that region fails here instead of drifting silently from its source.
+if [ -z "$PY" ]; then
+  echo "  SKIP  T-078  generated CSS freshness (no python available)"
+else
+check T-078 "generated CSS block matches its generator"   "$PY" "$root/tools/make_pattern.py" --check
+fi
+check T-079 "pattern generator is committed"  test -f "$root/tools/make_pattern.py"
+
+# The title card's shape must come from a clipped background on an ANCESTOR of
+# the heading, not an SVG sibling behind it. With a sibling the text is
+# technically on the page colour — it measured 1.00:1 — and would be invisible
+# if the shape failed to paint. tests/test_layout.sh measures the real ratio;
+# this is the structural guard that runs where no browser does.
+check T-080 "title card paints a real background behind its text" bash -c '
+  grep -A 6 "^\.titlecard {" "'"$site"'/styles.css" | grep -q "background: var(" &&
+  grep -A 6 "^\.titlecard {" "'"$site"'/styles.css" | grep -q "clip-path: var(--burst" &&
+  grep -A 6 "^\.titlecard__fill {" "'"$site"'/styles.css" | grep -q "background: var(" &&
+  ! grep -q "titlecard__burst" "'"$index"'"
+'
+
+# --- T-081 .. T-083: publishing configuration ---------------------------
+check T-081 "CNAME names the apex domain" bash -c '
   [ "$(tr -d "[:space:]" < "'"$site"'/CNAME")" = "picklestoys.com" ]
 '
-check T-081 "sitemap points at the live domain" bash -c '
+check T-082 "sitemap points at the live domain" bash -c '
   grep -q "https://picklestoys.com/" "'"$site"'/sitemap.xml"
 '
-check T-082 "robots allows indexing"       grep -q 'Allow: /' "$site/robots.txt"
+check T-083 "robots allows indexing"       grep -q 'Allow: /' "$site/robots.txt"
 
 # --- T-090 .. T-091: weight budget --------------------------------------
 # There are no images yet, so the whole page is the three core files. Keeping

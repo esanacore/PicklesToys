@@ -100,22 +100,26 @@
          ship dates — those are the owner's to provide.
          --------------------------------------------------------------- -->
     <section class="hero">
-      <div class="hero__blobs" aria-hidden="true">
-        <span class="blob blob--a"></span>
-        <span class="blob blob--b"></span>
-        <span class="blob blob--c"></span>
-      </div>
-
       <div class="hero__inner">
         <p class="pill reveal">
           <span class="pill__dot" aria-hidden="true"></span>
           Not open yet — still in the workshop
         </p>
 
-        <h1 class="hero__title reveal">
-          Handmade toys,<br>
-          made in <span class="squiggle">small batches</span>.
-        </h1>
+        <!-- Title card. The burst is an irregular polygon rather than a
+             regular star: alternating outer/inner radii with per-point jitter,
+             generated from a seeded RNG so the shape is reproducible, then
+             frozen here. See docs/BRAND.md. preserveAspectRatio="none" lets it
+             stretch to whatever the heading needs; non-scaling-stroke keeps the
+             outline an even weight when it does. -->
+        <div class="titlecard reveal">
+          <div class="titlecard__fill">
+            <h1 class="titlecard__title">
+            Handmade toys,<br>
+            made in small batches.
+          </h1>
+          </div>
+        </div>
 
         <p class="hero__lede reveal">
           PicklesToys is a one-bench toy workshop in the making. The plan is
@@ -133,7 +137,11 @@
     <!-- --------------------------------------------------------------- -->
     <section id="what" class="band">
       <div class="band__inner">
-        <p class="overline">The idea</p>
+        <div class="titlecard titlecard--tag">
+          <div class="titlecard__fill">
+            <p class="titlecard__title overline">The idea</p>
+          </div>
+        </div>
         <h2>Three things worth committing to</h2>
 
         <ul class="cards">
@@ -175,7 +183,11 @@
     <section id="look" class="band band--tint">
       <div class="band__inner band__inner--split">
         <div>
-          <p class="overline">The look</p>
+          <div class="titlecard titlecard--tag">
+          <div class="titlecard__fill">
+            <p class="titlecard__title overline">The look</p>
+          </div>
+        </div>
           <h2>Scrappy, wobbly, loud</h2>
           <p class="prose">
             The design language borrows from early-90s cartoon art direction —
@@ -208,7 +220,11 @@
          --------------------------------------------------------------- -->
     <section id="news" class="band">
       <div class="band__inner band__inner--narrow">
-        <p class="overline">Keeping in touch</p>
+        <div class="titlecard titlecard--tag">
+          <div class="titlecard__fill">
+            <p class="titlecard__title overline">Keeping in touch</p>
+          </div>
+        </div>
         <h2>There is nothing to buy yet</h2>
         <p class="prose">
           No shop, no mailing list, no pre-orders. When the first batch is real,

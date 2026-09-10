@@ -106,6 +106,13 @@ requirements below exist specifically to keep that true as the site is edited.
   - `FR-011-AC-1`: a 1200x630 PNG card exists, generated from a committed SVG source by a committed script.
   - `FR-011-AC-2`: `og:image` and `twitter:image` are absolute URLs on the canonical host, and the declared dimensions match the actual file.
 
+**FR-012** The site's generated design assets stay reproducible from committed sources.
+
+- Level: `SHOULD`
+- Acceptance criteria:
+  - `FR-012-AC-1`: the doodle field and burst polygons in `site/styles.css` are produced by a committed generator, and a check re-derives them so hand-edits fail the build.
+  - `FR-012-AC-2`: decorative shapes behind text are painted as real backgrounds on an ancestor of that text, so the contrast a reader gets is the contrast the suite measures.
+
 ## Non-Functional Requirements
 
 **NFR-001** The site has no runtime dependencies.
