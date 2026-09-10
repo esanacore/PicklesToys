@@ -13,15 +13,19 @@ deploys `site/` to GitHub Pages.
 ## Project-Specific Rules
 
 - **The site must keep saying it is not open yet.** There are no products,
-  prices, launch dates, or contact details. Do not invent any. `T-030`-`T-034`
-  fail the build if commerce copy or a dollar figure appears.
+  prices, or launch dates. Do not invent any. `T-030`-`T-034` fail the build if
+  commerce copy or a dollar figure appears. The contact address is the one
+  real-world detail on the page — it was supplied by the owner, not invented,
+  which is the only reason it is there.
 - **The IP boundary is not negotiable.** The aesthetic is early-90s cartoon
   art direction. Naming a show, studio, network, or character — anywhere in
   the HTML, comments included — is infringement territory and fails `T-040`.
   Read `docs/BRAND.md` before touching page copy or design.
 - **Real-world facts are the owner's to provide.** Leave clearly-marked TBD
-  placeholders (`CONTACT-EMAIL-TBD`, styled with `.tbd`) rather than inventing
-  values. An address that bounces is worse than no address.
+  placeholders in the `.tbd` treatment rather than inventing values — an
+  address that bounces is worse than no address. The contact address was the
+  last outstanding one and landed 2026-09-10, so nothing on the page carries a
+  placeholder today; `.tbd` is retained for the next one (`T-052b`).
 - `site/` must stay dependency-free: no CDNs, no external fonts, no
   package.json. `T-060`-`T-063` enforce this.
 - Small orange text uses `--orange-text`, not `--orange` — the vivid brand

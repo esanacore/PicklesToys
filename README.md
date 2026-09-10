@@ -4,7 +4,7 @@
 [![Eric's Engineering Constitution](https://img.shields.io/badge/Eric's%20Engineering%20Constitution-Adopted-blue)](https://github.com/esanacore/engineering-constitution)
 <!-- CONSTITUTION_END -->
 
-Current version: **0.6.0** · Domain: **picklestoys.com** (registered, not yet
+Current version: **0.7.0** · Domain: **picklestoys.com** (registered, not yet
 pointed at this site — see `docs/DOMAIN_SETUP.md`)
 
 The website for **PicklesToys** — a handmade, small-batch toy workshop in the
@@ -37,7 +37,7 @@ python -m http.server 8123 --directory site
 bash tests/test_site.sh
 ```
 
-64 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
+65 structural checks (`T-xxx`) plus a dependency-free HTML/accessibility
 validator (`V-xxx`) that runs on the standard library alone, so it works on a
 bare CI runner. The suite gates every deploy — if it fails, the previous
 deployment stays up.
@@ -111,7 +111,6 @@ Push to `main`. That is the whole process.
 Early. The domain is registered and this placeholder is what lives at it. What
 is deliberately **not** here yet, because it is the owner's to provide:
 
-- A contact email (marked `CONTACT-EMAIL-TBD` in `site/index.html`)
 - Product photos, names, prices, or a shop
 - Social links
 - Any launch date

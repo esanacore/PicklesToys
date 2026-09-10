@@ -4,6 +4,41 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.7.0 — 2026-09-10
+
+### Added
+
+- **A real contact address.** `pureheartmakerstuff@gmail.com`, as a `mailto:`
+  link in the sticker treatment used elsewhere on the page. This was the last
+  marked placeholder on the site; `CONTACT-EMAIL-TBD` and its loud `.tbd`
+  callout are gone.
+- Copy inviting the mail, so the address is not just sitting there unexplained
+  under a heading that says there is nothing to buy.
+
+### Changed
+
+- **`T-050` now asserts the real address rather than accepting either state.**
+  It previously passed if *either* a marked placeholder or a `mailto:` was
+  present, which was correct while one was pending — but with a real address
+  live, that shape would also have passed if someone deleted it.
+- **`T-051` is now a drift guard**: the visible link text and the `mailto:`
+  target must name the same address. They are written twice and can diverge,
+  and a link that displays one address while mailing another is worse than no
+  link at all. Verified against a deliberately drifted copy.
+- The old placeholder check moves to `T-052b`, so a future TBD still has to be
+  visibly flagged.
+
+### Notes
+
+- The `.tbd` CSS is retained although nothing uses it today. `CLAUDE.md`
+  instructs that unavailable facts ship as visibly-marked placeholders in that
+  treatment; deleting the style would mean reinventing it for the next one.
+- The address is a plain `mailto:` on a public page, so it will be scraped by
+  address harvesters in time. That is the normal trade for being reachable.
+  If the spam becomes a nuisance, the fix is a forwarding alias rather than
+  obfuscating the link — obfuscation mostly defeats screen readers and
+  keyboard users while barely inconveniencing scrapers.
+
 ## 0.6.0 — 2026-09-10
 
 ### Changed

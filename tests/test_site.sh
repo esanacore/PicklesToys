@@ -96,10 +96,28 @@ check T-042 "brand boundary is documented"  test -f "$root/docs/BRAND.md"
 # Real-world facts (email, socials, prices, dates) are the owner to provide.
 # A placeholder must be visibly a placeholder; an invented address that
 # bounces is worse than none at all.
-check T-050 "contact placeholder is marked" bash -c '
-  grep -q "CONTACT-EMAIL-TBD" "'"$index"'" || grep -q "mailto:" "'"$index"'"
+# The address landed 2026-09-10. Until then this accepted either a marked
+# placeholder or a real mailto, which was right while one was pending — but
+# now that a real address is live, that shape would also pass if someone
+# deleted it. It asserts the real thing instead.
+check T-050 "contact address is a real mailto" bash -c '
+  grep -q "href=\"mailto:[^\"@]*@[^\"]*\"" "'"$index"'" &&
+  ! grep -q "CONTACT-EMAIL-TBD" "'"$index"'"
 '
-check T-051 "a marked TBD is visually flagged" bash -c '
+# The visible text and the href must name the same address. They are written
+# twice, so they can drift, and a link that displays one address while mailing
+# another is worse than no link.
+check T-051 "link text matches the mailto target" "$PY" - "$index" <<'EOF'
+import re, sys
+html = open(sys.argv[1], encoding="utf-8").read()
+links = re.findall(r'href="mailto:([^"]+)"[^>]*>([^<]+)<', html)
+assert links, "no mailto link found"
+for target, text in links:
+    assert target.strip() == text.strip(),         f"mailto target {target!r} does not match link text {text!r}"
+EOF
+# The .tbd treatment is retained for the next unavailable fact; if one is
+# reintroduced it must still be visibly flagged.
+check T-052b "any reintroduced TBD is visually flagged" bash -c '
   if grep -q "CONTACT-EMAIL-TBD" "'"$index"'"; then
     grep -q "class=\"tbd\"" "'"$index"'";
   fi

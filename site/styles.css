@@ -692,6 +692,49 @@ code {
    impossible to ship by accident without noticing it.
    ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------
+   Contact
+   ------------------------------------------------------------------ */
+
+.contact {
+  margin: 1.4rem 0 0;
+}
+
+/* The sticker treatment from .theme-toggle, at reading size. Not a burst:
+   a starburst's spikes are not usable area, and this element is a long
+   string that has to stay legible and clickable. */
+.contact__link {
+  display: inline-block;
+  background: var(--surface);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.62rem 1.3rem;
+  font-weight: 700;
+  font-size: 1.02rem;
+  text-decoration: none;
+  box-shadow: 4px 4px 0 var(--shadow-ink);
+  transform: rotate(-0.8deg);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  /* A long address must not push a narrow phone into a horizontal scroll. */
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.contact__link:hover {
+  transform: rotate(-0.8deg) translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--shadow-ink);
+}
+
+.contact__link:active {
+  transform: rotate(-0.8deg) translate(4px, 4px);
+  box-shadow: 0 0 0 var(--shadow-ink);
+}
+
+/* Retained deliberately though nothing uses it today: CLAUDE.md instructs
+   that unavailable facts ship as visibly-marked placeholders with this
+   treatment, and the contact address was the last one to be filled in.
+   Deleting it would mean reinventing it for the next TBD. */
 .tbd {
   border: 3px dashed var(--ink);
   border-radius: 14px 6px 16px 8px;

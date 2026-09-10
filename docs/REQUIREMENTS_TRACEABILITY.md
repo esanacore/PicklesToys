@@ -26,7 +26,7 @@ A requirement with no verifying test is a coverage gap. Record it in `docs/TEST_
 | FR-001 | MUST | Every promised section is present and nav links resolve | FR-001-AC-1 | T-020, T-021, T-022, T-023 | Verified |
 | FR-002 | MUST | Page states it is not open; describes handmade small-batch intent | FR-002-AC-1 | T-030, T-031, T-032 | Verified |
 | FR-003 | MUST | No commerce that does not exist | FR-003-AC-1, FR-003-AC-2 | T-033, T-034 | Verified |
-| FR-004 | MUST | Unavailable facts are marked placeholders, never invented | FR-004-AC-1, FR-004-AC-2, FR-004-AC-3 | T-050, T-051, T-052, T-053 | Verified |
+| FR-004 | MUST | Unavailable facts are marked placeholders, never invented | FR-004-AC-1, FR-004-AC-2, FR-004-AC-3 | T-050 (real mailto), T-051 (text matches target), T-052b (any reintroduced TBD is flagged), T-052, T-053 | Verified |
 | FR-005 | MUST | Era-inspired only; no third-party franchise or character names | FR-005-AC-1, FR-005-AC-2, FR-005-AC-3 | T-040, T-041, T-042 | Verified |
 | FR-006 | MUST | Push to `main` publishes, gated on tests | FR-006-AC-1 | T-005 (workflow present); the gate itself is exercised by every CI run | Verified |
 | FR-007 | MUST | Publishing config targets the apex domain consistently | FR-007-AC-1 | T-017, T-081, T-082, T-083 | Verified |

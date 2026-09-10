@@ -58,8 +58,8 @@ requirements below exist specifically to keep that true as the site is edited.
 
 - Level: `MUST`
 - Acceptance criteria:
-  - `FR-004-AC-1`: contact is either a real `mailto:` link or the marked `CONTACT-EMAIL-TBD` placeholder.
-  - `FR-004-AC-2`: a placeholder, when present, is visually flagged by the `.tbd` treatment.
+  - `FR-004-AC-1`: contact is a real `mailto:` link, and its visible text names the same address it mails. (Until 2026-09-10 this criterion also accepted a marked `CONTACT-EMAIL-TBD` placeholder; with a real address live, accepting either would have passed a page that had simply lost it.)
+  - `FR-004-AC-2`: a placeholder, when one is present for some other fact, is visually flagged by the `.tbd` treatment.
   - `FR-004-AC-3`: no fabricated social handles, example.com addresses, or lorem ipsum.
 
 ### Brand and intellectual property

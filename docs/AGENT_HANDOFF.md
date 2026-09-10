@@ -42,7 +42,7 @@ a test edit.
 | `site/index.html` | The whole page. Single file, commented by section. |
 | `site/styles.css` | Design system. Color tokens in three blocks at the top. |
 | `site/app.js` | Theme toggle, scroll reveal, scrollspy, footer year. Progressive enhancement only. |
-| `tests/test_site.sh` | 64 structural checks. The CI gate. Chains the browser suite. |
+| `tests/test_site.sh` | 65 structural checks. The CI gate. Chains the browser suite. |
 | `tests/test_layout.sh` | Browser suite (`L-xxx`): measured contrast + geometry. Skips without a browser. |
 | `tests/layout_assertions.js` | What the browser suite evaluates in-page. |
 | `tests/validate_html.py` | HTML + accessibility validator, standard library only. |
@@ -89,13 +89,18 @@ a test edit.
 
 ## Current state
 
-Version 0.6.0. The site builds, all 64 structural and 20 browser checks pass,
-and all 19 requirements have verifying tests. What is outstanding is in `TODO.md`, and the largest
-items are blocked on the owner: a real contact email, the registrar/DNS
-details, and a decision about what is actually being made first.
+Version 0.7.0. The site builds, all 65 structural and 20 browser checks pass,
+and all 19 requirements have verifying tests.
 
-The site is live at https://esanacore.github.io/PicklesToys/ but **not yet at
-picklestoys.com** — DNS records still need creating and the custom domain
-setting still needs applying. Neither can be done from inside the repository.
-Note that `og:image` points at the apex domain and so will not resolve until
-that happens; that is deliberate (see `docs/DOMAIN_SETUP.md`).
+**Live at https://picklestoys.com since 2026-09-10**, over HTTPS with a valid
+certificate and an http->https redirect. DNS is GoDaddy. `og:image` resolves
+at the apex, so link previews work.
+
+One known wrinkle: the certificate covers the apex only, so
+`https://www.picklestoys.com` fails TLS. `www` CNAMEs to `esanacore.github.io`
+correctly and redirects over http; GitHub had not extended the certificate to
+it as of the last check. See `docs/DOMAIN_SETUP.md`.
+
+What is outstanding is in `TODO.md`. The largest item still blocked on the
+owner is deciding what is actually being made first — including whether it is
+aimed at children, which decides whether CPSIA applies.

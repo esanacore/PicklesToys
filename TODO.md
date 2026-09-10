@@ -4,9 +4,9 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
 
 ## Blocked on the owner (real-world facts nobody else can supply)
 
-- [ ] **Contact email.** Replace `CONTACT-EMAIL-TBD` in `site/index.html` with
-      a real `mailto:` link. `T-050` accepts either the marked placeholder or a
-      real address, so the site stays honest until this lands.
+- [x] **Contact email.** Done 2026-09-10 — `pureheartmakerstuff@gmail.com`.
+      `T-050` now asserts the real address and `T-051` guards against the
+      visible text drifting from the `mailto:` target.
 - [x] **DNS host identified: GoDaddy** (2026-09-10, from the live
       nameservers `ns37/ns38.domaincontrol.com`). `docs/DOMAIN_SETUP.md` now
       carries GoDaddy-specific steps. Still worth recording the **expiry
