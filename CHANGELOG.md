@@ -4,6 +4,24 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.7.1 — 2026-09-10
+
+### Fixed
+
+- **A stale comment in `index.html` was shipping to the live page**, still
+  describing the contact address as a deliberate placeholder — and crediting
+  `T-070` (the theme-toggle check) for accepting it, which was never that
+  test's job. Rewritten to describe what is actually there and cite `T-050`
+  and `T-051`.
+
+### Added
+
+- **`T-105`: every `T-xxx` cited in `site/` or `tools/` must exist in the
+  suite.** A comment naming a test ID reads as a guarantee; one naming an ID
+  that does not exist is worse than no comment, and nothing was checking. The
+  five other citations in the source all resolved correctly — this was the
+  only wrong one, and now it cannot recur. Verified against a bogus id.
+
 ## 0.7.0 — 2026-09-10
 
 ### Added

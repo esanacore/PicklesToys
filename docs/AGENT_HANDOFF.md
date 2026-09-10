@@ -42,7 +42,7 @@ a test edit.
 | `site/index.html` | The whole page. Single file, commented by section. |
 | `site/styles.css` | Design system. Color tokens in three blocks at the top. |
 | `site/app.js` | Theme toggle, scroll reveal, scrollspy, footer year. Progressive enhancement only. |
-| `tests/test_site.sh` | 65 structural checks. The CI gate. Chains the browser suite. |
+| `tests/test_site.sh` | 66 structural checks. The CI gate. Chains the browser suite. |
 | `tests/test_layout.sh` | Browser suite (`L-xxx`): measured contrast + geometry. Skips without a browser. |
 | `tests/layout_assertions.js` | What the browser suite evaluates in-page. |
 | `tests/validate_html.py` | HTML + accessibility validator, standard library only. |
@@ -89,7 +89,7 @@ a test edit.
 
 ## Current state
 
-Version 0.7.0. The site builds, all 65 structural and 20 browser checks pass,
+Version 0.7.1. The site builds, all 66 structural and 20 browser checks pass,
 and all 19 requirements have verifying tests.
 
 **Live at https://picklestoys.com since 2026-09-10**, over HTTPS with a valid

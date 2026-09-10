@@ -322,6 +322,21 @@ check T-103 "card copy sits on a real background layer" bash -c '
   grep -A 4 "^\.card__fill {" "'"$site"'/styles.css" | grep -q "background: var(--surface)" &&
   [ "$(grep -c "class=\"card__fill\"" "'"$index"'")" = 3 ]
 '
+# A comment citing a test ID that does not exist is worse than no comment:
+# it looks like a guarantee and is not one. index.html shipped a contact note
+# crediting "(T-070)" — the theme-toggle check — for accepting the address
+# placeholder, which T-050 did. Only site/ and tools/ are scanned, so this
+# cannot trip over its own text.
+check T-105 "test ids cited in source comments exist" bash -c '
+  defined=$(grep -oE "check T-[0-9]{3}" "'"$root"'/tests/test_site.sh" | awk "{print \$2}" | sort -u);
+  missing="";
+  for t in $(grep -rhoE "T-[0-9]{3}" "'"$root"'/site" "'"$root"'/tools" 2>/dev/null | sort -u); do
+    printf "%s
+" "$defined" | grep -qx "$t" || missing="$missing $t";
+  done;
+  [ -z "$missing" ] || { echo "cited but undefined:$missing"; exit 1; }
+'
+
 check T-104 "swatch chips and card panels use generated shapes" bash -c '
   grep -q -- "--burst-badge:" "'"$site"'/styles.css" &&
   grep -q -- "--panel-1:" "'"$site"'/styles.css" &&

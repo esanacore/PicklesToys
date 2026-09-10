@@ -225,10 +225,14 @@
     </section>
 
     <!-- ---------------------------------------------------------------
-         Contact. The email is a marked placeholder on purpose — inventing an
-         address that bounces is worse than showing none. The test suite
-         (T-070) accepts either the placeholder or a real mailto:, so this page
-         ships honest and the owner swaps in one line.
+         Contact. The address is real and owner-supplied — it is the only
+         real-world detail on the page, which is the only reason it is here.
+         It shipped as a marked placeholder until 2026-09-10 on the principle
+         that an address which bounces is worse than showing none.
+
+         T-050 asserts the real mailto and T-051 asserts the visible text
+         matches its target: the address is written twice, and a link that
+         displays one address while mailing another is worse than no link.
          --------------------------------------------------------------- -->
     <section id="news" class="band">
       <div class="band__inner band__inner--narrow">
