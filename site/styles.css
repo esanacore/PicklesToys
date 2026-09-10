@@ -120,6 +120,13 @@
      are clip-paths and not inline SVG. */
   --burst-hero: polygon(100.00% 54.46%, 83.41% 66.03%, 85.70% 84.23%, 68.97% 80.43%, 58.67% 100.00%, 46.24% 91.54%, 27.13% 99.80%, 26.93% 74.84%, 0.00% 73.72%, 21.04% 51.70%, 6.32% 34.68%, 31.81% 33.08%, 23.56% 0.00%, 48.88% 22.23%, 60.43% 4.75%, 67.57% 22.90%, 87.68% 21.89%, 84.94% 38.75%);
   --burst-tag: polygon(100.00% 52.63%, 76.37% 60.92%, 95.19% 80.37%, 69.25% 75.29%, 70.06% 96.35%, 56.22% 80.21%, 43.41% 98.05%, 38.19% 83.41%, 9.43% 100.00%, 25.39% 70.91%, 9.24% 66.50%, 22.19% 53.30%, 0.00% 39.03%, 26.21% 37.49%, 15.17% 15.96%, 37.72% 26.13%, 41.56% 0.00%, 54.18% 27.22%, 74.50% 4.03%, 73.73% 29.49%, 99.61% 25.29%, 78.02% 46.33%);
+  --burst-badge: polygon(97.75% 53.10%, 87.18% 61.90%, 89.17% 74.29%, 78.97% 80.68%, 73.91% 91.04%, 60.37% 88.21%, 51.80% 100.00%, 40.65% 90.85%, 24.31% 98.69%, 28.67% 76.09%, 6.69% 77.15%, 21.54% 61.57%, 0.00% 54.66%, 14.75% 43.46%, 0.45% 25.84%, 22.18% 26.33%, 22.17% 5.60%, 43.25% 23.56%, 52.27% 0.00%, 60.49% 18.66%, 78.69% 7.32%, 77.75% 25.68%, 100.00% 24.21%, 82.08% 44.26%);
+
+  /* Ragged card panels: an edge that wobbles rather than a burst,
+     because these hold body copy. See ragged_rect(). */
+  --panel-1: polygon(0.00% 0.71%, 9.09% 2.20%, 18.18% 0.73%, 27.27% 2.56%, 36.36% 2.15%, 45.45% 1.08%, 54.55% 1.50%, 63.64% 0.66%, 72.73% 0.15%, 81.82% 2.61%, 90.91% 0.20%, 99.52% 0.00%, 98.51% 9.09%, 98.07% 18.18%, 99.55% 27.27%, 97.46% 36.36%, 98.58% 45.45%, 98.84% 54.55%, 97.37% 63.64%, 99.76% 72.73%, 97.06% 81.82%, 98.93% 90.91%, 100.00% 97.75%, 90.91% 98.18%, 81.82% 98.20%, 72.73% 98.58%, 63.64% 97.06%, 54.55% 98.66%, 45.45% 98.49%, 36.36% 99.34%, 27.27% 99.16%, 18.18% 97.61%, 9.09% 99.44%, 1.23% 100.00%, 2.93% 90.91%, 0.72% 81.82%, 2.68% 72.73%, 0.85% 63.64%, 1.41% 54.55%, 0.89% 45.45%, 2.66% 36.36%, 1.60% 27.27%, 1.18% 18.18%, 1.80% 9.09%);
+  --panel-2: polygon(0.00% 0.73%, 9.09% 1.09%, 18.18% 1.70%, 27.27% 1.56%, 36.36% 2.14%, 45.45% 2.46%, 54.55% 0.77%, 63.64% 2.13%, 72.73% 0.62%, 81.82% 2.71%, 90.91% 0.70%, 98.54% 0.00%, 99.76% 9.09%, 97.67% 18.18%, 99.23% 27.27%, 99.30% 36.36%, 99.31% 45.45%, 98.02% 54.55%, 99.25% 63.64%, 99.88% 72.73%, 98.74% 81.82%, 98.54% 90.91%, 100.00% 97.55%, 90.91% 97.31%, 81.82% 97.86%, 72.73% 98.72%, 63.64% 97.70%, 54.55% 99.24%, 45.45% 99.76%, 36.36% 99.00%, 27.27% 97.43%, 18.18% 98.23%, 9.09% 98.42%, 0.97% 100.00%, 0.39% 90.91%, 2.55% 81.82%, 0.93% 72.73%, 0.24% 63.64%, 1.92% 54.55%, 2.80% 45.45%, 0.22% 36.36%, 1.64% 27.27%, 1.40% 18.18%, 1.85% 9.09%);
+  --panel-3: polygon(0.00% 0.78%, 9.09% 2.43%, 18.18% 1.76%, 27.27% 2.78%, 36.36% 0.12%, 45.45% 0.70%, 54.55% 1.91%, 63.64% 1.58%, 72.73% 1.62%, 81.82% 0.26%, 90.91% 1.42%, 98.47% 0.00%, 99.39% 9.09%, 97.16% 18.18%, 97.20% 27.27%, 97.16% 36.36%, 99.85% 45.45%, 99.28% 54.55%, 98.21% 63.64%, 97.79% 72.73%, 97.96% 81.82%, 97.38% 90.91%, 100.00% 99.15%, 90.91% 98.14%, 81.82% 99.48%, 72.73% 99.35%, 63.64% 98.37%, 54.55% 98.79%, 45.45% 97.44%, 36.36% 97.63%, 27.27% 99.44%, 18.18% 98.55%, 9.09% 99.60%, 1.10% 100.00%, 0.69% 90.91%, 2.74% 81.82%, 2.58% 72.73%, 0.94% 63.64%, 2.35% 54.55%, 1.51% 45.45%, 2.72% 36.36%, 1.06% 27.27%, 2.19% 18.18%, 2.30% 9.09%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -530,6 +537,15 @@ code {
 
 /* ------------------------------------------------------------------
    Cards
+
+   Two layers, exactly like .titlecard: the outer element paints the rim and
+   the inner one paints the fill, both clipped to the same ragged polygon.
+
+   A border cannot do this job — clip-path cuts the border box, so a border
+   gets sliced off wherever the edge wobbles inward. And the fill has to be a
+   real background-color on an ANCESTOR of the copy, not a pseudo-element
+   behind it, or the contrast pass measures the text against the rim colour.
+   That is the T-080 lesson, applied here rather than relearned.
    ------------------------------------------------------------------ */
 
 .cards {
@@ -547,17 +563,49 @@ code {
   }
 }
 
+/* Three layers, and the nesting is load-bearing:
+     .card        positioning context, NOT clipped
+       .card__num badge, hangs over the torn edge
+       .card__panel  rim colour, clipped
+         .card__fill fill colour, clipped, inset by the rim width
+
+   The badge has to live outside .card__panel. clip-path clips absolutely
+   positioned descendants too, so while the badge was a child of the clipped
+   element it was being sliced in half by the card's own torn edge — it
+   rendered as a pennant rather than a burst. */
 .card {
   position: relative;
-  background: var(--surface);
-  border: 3px solid var(--ink);
-  /* Uneven corners: the cards should not line up like a spec sheet. */
-  border-radius: 22px 8px 24px 10px;
-  padding: 2.25rem 1.5rem 1.5rem;
-  box-shadow: 6px 6px 0 var(--shadow-ink);
+  display: flex;
 }
 
-/* Each card leans a different way, like they were stuck on by hand. */
+.card__panel {
+  flex: 1 1 auto;
+  /* Flex so the fill can stretch to an equal-height grid row while still
+     accounting for its own margin. height:100% plus a margin overflows by
+     twice the margin, and the clip then carves wedges out of the edges —
+     which is exactly what it did. */
+  display: flex;
+  background: var(--ink);
+  /* drop-shadow, not box-shadow: box-shadow traces the element's rectangle
+     and would sit visibly outside the torn silhouette. */
+  filter: drop-shadow(6px 6px 0 var(--shadow-ink));
+}
+
+.card__fill {
+  flex: 1 1 auto;
+  background: var(--surface);
+  margin: 4px;
+  padding: 2.4rem 1.6rem 1.7rem;
+}
+
+/* Each card gets its own polygon and its own lean, so no two read alike. */
+.cards .card:nth-child(1) .card__panel,
+.cards .card:nth-child(1) .card__fill { clip-path: var(--panel-1); }
+.cards .card:nth-child(2) .card__panel,
+.cards .card:nth-child(2) .card__fill { clip-path: var(--panel-2); }
+.cards .card:nth-child(3) .card__panel,
+.cards .card:nth-child(3) .card__fill { clip-path: var(--panel-3); }
+
 .cards .card:nth-child(1) { transform: rotate(-1.2deg); }
 .cards .card:nth-child(2) { transform: rotate(0.8deg); }
 .cards .card:nth-child(3) { transform: rotate(-0.6deg); }
@@ -572,27 +620,27 @@ code {
   margin-bottom: 0;
 }
 
+/* The number is a small burst rather than a disc. Single layer on purpose:
+   at this size a rim eats most of the shape, and the text sits directly on
+   the accent, which is what the contrast pass then measures. */
 .card__num {
   position: absolute;
-  top: -18px;
-  left: -14px;
-  width: 44px;
-  height: 44px;
+  top: -14px;
+  left: -10px;
+  z-index: 1;
+  width: 52px;
+  height: 52px;
   display: grid;
   place-items: center;
-  border: 3px solid var(--ink);
-  border-radius: 50%;
+  clip-path: var(--burst-badge);
   font-weight: 800;
   font-size: 0.95rem;
-  color: var(--ink);
-  box-shadow: 3px 3px 0 var(--shadow-ink);
+  filter: drop-shadow(3px 3px 0 var(--shadow-ink));
 }
 
 .card--orange .card__num { background: var(--sun); color: var(--on-sun); }
 .card--teal   .card__num { background: var(--teal); color: var(--on-accent); }
 .card--grape  .card__num { background: var(--grape); color: var(--on-accent); }
-
-.card--orange { border-color: var(--ink); }
 
 /* ------------------------------------------------------------------
    Swatches
@@ -612,21 +660,32 @@ code {
   font-size: 0.95rem;
 }
 
-.swatch::before {
-  content: "";
-  width: 46px;
-  height: 46px;
+/* The chip is its own element rather than a ::before, so it can carry the
+   rim layer as a pseudo of its own. It holds no text, so nothing here needs
+   to satisfy the contrast pass. */
+.swatch__chip {
+  position: relative;
   flex: none;
-  border: 3px solid var(--ink);
-  border-radius: 58% 42% 45% 55% / 48% 55% 45% 52%;
-  box-shadow: 3px 3px 0 var(--shadow-ink);
+  width: 52px;
+  height: 52px;
+  background: var(--ink);
+  clip-path: var(--burst-badge);
+  filter: drop-shadow(3px 3px 0 var(--shadow-ink));
 }
 
-.swatch--orange::before { background: var(--orange); }
-.swatch--teal::before   { background: var(--teal); }
-.swatch--grape::before  { background: var(--grape); }
-.swatch--sun::before    { background: var(--sun); }
-.swatch--lime::before   { background: var(--lime); }
+.swatch__chip::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  clip-path: var(--burst-badge);
+  background: var(--swatch-colour, var(--orange));
+}
+
+.swatch--orange { --swatch-colour: var(--orange); }
+.swatch--teal   { --swatch-colour: var(--teal); }
+.swatch--grape  { --swatch-colour: var(--grape); }
+.swatch--sun    { --swatch-colour: var(--sun); }
+.swatch--lime   { --swatch-colour: var(--lime); }
 
 /* ------------------------------------------------------------------
    TBD callout — deliberately loud, so an unfilled placeholder is

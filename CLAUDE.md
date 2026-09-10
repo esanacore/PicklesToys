@@ -37,6 +37,10 @@ deploys `site/` to GitHub Pages.
   `clip-path` on a real `background-color` of an *ancestor* of the heading. An
   SVG sibling leaves the text on the page colour — it measured 1.00:1 — and
   would be invisible if the shape failed to paint (`T-080`).
+- **`clip-path` clips absolutely positioned descendants.** Anything meant to
+  overhang a clipped shape — the card number badges — must be a *sibling* of
+  the clipped element, not a child. Getting this wrong sliced the badges in
+  half along the card's torn edge (`T-102`).
 - **Run `bash tests/test_layout.sh` after any colour or layout change.** The
   structural suite cannot see computed colour. The browser suite measures every
   text node; it skips silently where no browser is installed, so a green

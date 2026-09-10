@@ -282,6 +282,35 @@ EOF
 fi
 check T-101 "og-image generator is committed"  test -f "$root/tools/make_og_image.py"
 
+# --- T-102 .. T-104: the torn-card layering -----------------------------
+# clip-path clips absolutely positioned descendants too. While the number
+# badge was a child of the clipped panel it was sliced in half by the card's
+# own torn edge and rendered as a pennant. The badge must stay a sibling of
+# the clipped layer, not a descendant of it.
+check T-102 "card badge sits outside the clipped panel" "$PY" - "$index" <<'EOF'
+import re, sys
+html = open(sys.argv[1], encoding="utf-8").read()
+for card in re.findall(r'<li class="card [^"]*">(.*?)</li>', html, re.S):
+    panel = re.search(r'<div class="card__panel">(.*?)</div>\s*</div>', card, re.S)
+    assert panel, "card has no card__panel wrapper"
+    assert "card__num" not in panel.group(1),         "card__num is inside card__panel; clip-path will slice it"
+    assert "card__num" in card, "card lost its badge"
+EOF
+# The fill colour must be a real background on an ANCESTOR of the copy, not a
+# pseudo-element behind it, or the contrast pass measures the text against the
+# rim colour instead. Same lesson as T-080.
+check T-103 "card copy sits on a real background layer" bash -c '
+  grep -q "\.card__fill {" "'"$site"'/styles.css" &&
+  grep -A 4 "^\.card__fill {" "'"$site"'/styles.css" | grep -q "background: var(--surface)" &&
+  [ "$(grep -c "class=\"card__fill\"" "'"$index"'")" = 3 ]
+'
+check T-104 "swatch chips and card panels use generated shapes" bash -c '
+  grep -q -- "--burst-badge:" "'"$site"'/styles.css" &&
+  grep -q -- "--panel-1:" "'"$site"'/styles.css" &&
+  grep -q "clip-path: var(--burst-badge)" "'"$site"'/styles.css" &&
+  grep -q "clip-path: var(--panel-1)" "'"$site"'/styles.css"
+'
+
 echo
 echo "HTML + accessibility validation"
 echo "==============================="

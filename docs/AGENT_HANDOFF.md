@@ -42,7 +42,7 @@ a test edit.
 | `site/index.html` | The whole page. Single file, commented by section. |
 | `site/styles.css` | Design system. Color tokens in three blocks at the top. |
 | `site/app.js` | Theme toggle, scroll reveal, scrollspy, footer year. Progressive enhancement only. |
-| `tests/test_site.sh` | 61 structural checks. The CI gate. Chains the browser suite. |
+| `tests/test_site.sh` | 64 structural checks. The CI gate. Chains the browser suite. |
 | `tests/test_layout.sh` | Browser suite (`L-xxx`): measured contrast + geometry. Skips without a browser. |
 | `tests/layout_assertions.js` | What the browser suite evaluates in-page. |
 | `tests/validate_html.py` | HTML + accessibility validator, standard library only. |
@@ -63,6 +63,9 @@ a test edit.
   inverts too. `--sun` stays bright yellow in both, so its text must stay dark
   in both. Using `--ink` or `--on-accent` there produced a 1.25:1 badge that
   shipped for three releases (`T-077`).
+- **`clip-path` also clips absolutely positioned descendants.** The card
+  badges overhang the torn edge, so they must be siblings of `.card__panel`,
+  never children of it (`T-102`).
 - **A shape drawn behind text is not that text's background.** The burst is a
   clip-path on a real background-color of an ancestor. The first version used
   an SVG sibling and measured 1.00:1, because the heading's actual background
@@ -86,7 +89,7 @@ a test edit.
 
 ## Current state
 
-Version 0.5.0. The site builds, all 61 structural and 20 browser checks pass,
+Version 0.6.0. The site builds, all 64 structural and 20 browser checks pass,
 and all 19 requirements have verifying tests. What is outstanding is in `TODO.md`, and the largest
 items are blocked on the owner: a real contact email, the registrar/DNS
 details, and a decision about what is actually being made first.

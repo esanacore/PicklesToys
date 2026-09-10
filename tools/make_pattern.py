@@ -149,14 +149,23 @@ def sizes() -> str:
 
 
 BURSTS = {
-    # name: (seed, points, outer radius, inner radius, jitter)
-    "hero": (7, 9, 42, 26, 0.16),
-    "tag": (21, 11, 44, 24, 0.20),
+    # name: (seed, points, outer radius, inner radius, jitter, width ratio)
+    "hero": (7, 9, 42, 26, 0.16, 1.55),
+    "tag": (21, 11, 44, 24, 0.20, 1.55),
+    # Round rather than elongated, and more points: at badge size a nine-point
+    # burst reads as a blob, because each spike is only a few pixels.
+    "badge": (13, 12, 45, 31, 0.15, 1.0),
 }
+
+# Ragged panels for the three content cards. Unlike a burst, a card has to
+# hold body copy, so the edge only wobbles — the usable interior is the whole
+# box minus a couple of percent. Three seeds so the cards differ from each
+# other the way their rotations already do.
+PANELS = {"1": 5, "2": 23, "3": 61}
 
 
 def burst_points(seed: int, points: int, outer: float, inner: float,
-                 jitter: float, wide: float = 1.55):
+                 jitter: float, wide: float):
     """An irregular starburst: alternating outer/inner radii, jittered.
 
     Wider than tall, like a title card, and deliberately not a regular star —
@@ -171,6 +180,46 @@ def burst_points(seed: int, points: int, outer: float, inner: float,
         ang = (i / n) * math.pi * 2 + (r() - 0.5) * (math.pi / n) * jitter * 3
         pts.append((50 + math.cos(ang) * rad * wide, 50 + math.sin(ang) * rad))
     return pts
+
+
+def ragged_rect(seed: int, per_side: int = 11, wobble: float = 1.5):
+    """A rectangle whose edges wobble, like a torn paper card.
+
+    Amplitude and frequency have to be read together. Few points with a large
+    wobble gives long diagonal segments and deep pointed bites — it reads as
+    damage, not as a torn edge. Many points with a small wobble reads as
+    paper. The first attempt here used 7 points at 2.4%, which on a 344px card
+    put a 16px excursion across 29px of travel; 11 at 1.5% is the fix.
+
+    Each edge is nominally inset by `wobble` and then wobbles by +/-`wobble`,
+    so every point stays inside the 0-100 box. That matters: these are clipped
+    onto real content, and an edge that strayed outside would be cropped flat
+    by the element bounds — turning a torn edge back into a straight one.
+    """
+    r = rng(seed)
+    pts: list[tuple[float, float]] = []
+
+    def edge(x0: float, y0: float, x1: float, y1: float,
+             nx: float, ny: float) -> None:
+        for i in range(per_side):
+            t = i / per_side
+            d = wobble + (r() - 0.5) * 2 * wobble
+            pts.append((x0 + (x1 - x0) * t + nx * d,
+                        y0 + (y1 - y0) * t + ny * d))
+
+    edge(0, 0, 100, 0, 0, 1)        # top, normal points down (inward)
+    edge(100, 0, 100, 100, -1, 0)   # right
+    edge(100, 100, 0, 100, 0, -1)   # bottom
+    edge(0, 100, 0, 0, 1, 0)        # left
+    return pts
+
+
+def polygon(pts) -> str:
+    return "polygon(" + ", ".join(f"{x:.2f}% {y:.2f}%" for x, y in pts) + ")"
+
+
+def panel_path(seed: int) -> str:
+    return polygon(ragged_rect(seed))
 
 
 def clip_path(name: str) -> str:
@@ -188,11 +237,8 @@ def clip_path(name: str) -> str:
     ys = [p[1] for p in pts]
     x0, x1 = min(xs), max(xs)
     y0, y1 = min(ys), max(ys)
-    norm = [
-        f"{(x - x0) / (x1 - x0) * 100:.2f}% {(y - y0) / (y1 - y0) * 100:.2f}%"
-        for x, y in pts
-    ]
-    return "polygon(" + ", ".join(norm) + ")"
+    return polygon([((x - x0) / (x1 - x0) * 100, (y - y0) / (y1 - y0) * 100)
+                    for x, y in pts])
 
 
 def block() -> str:
@@ -212,6 +258,13 @@ def block() -> str:
         "     are clip-paths and not inline SVG. */",
         "  --burst-hero: " + clip_path("hero") + ";",
         "  --burst-tag: " + clip_path("tag") + ";",
+        "  --burst-badge: " + clip_path("badge") + ";",
+        "",
+        "  /* Ragged card panels: an edge that wobbles rather than a burst,",
+        "     because these hold body copy. See ragged_rect(). */",
+        "  --panel-1: " + panel_path(PANELS["1"]) + ";",
+        "  --panel-2: " + panel_path(PANELS["2"]) + ";",
+        "  --panel-3: " + panel_path(PANELS["3"]) + ";",
         "}",
         "",
         "@media (prefers-color-scheme: dark) {",

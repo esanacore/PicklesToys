@@ -160,6 +160,25 @@ clients round the corners; and check text metrics rather than estimating them.
 The first draft here had a status pill narrower than its own label, which is
 invisible in source and obvious the moment it renders.
 
+## Cards and chips
+
+Everything below the hero speaks the same language as the title cards, but at
+a lower amplitude, because these elements hold body copy rather than three
+words of display type:
+
+- **Content cards** are torn-paper panels: a rectangle whose edges wobble,
+  each generated from its own seed so the three differ. An ink rim behind a
+  surface fill, both clipped to the same polygon.
+- **Number badges and swatch chips** are compact bursts — round rather than
+  elongated, and with more points than the title cards, because at 52px a
+  nine-point burst reads as a blob.
+
+The tuning rule worth keeping: **amplitude and frequency have to be read
+together.** A few points with a large wobble gives long diagonal segments and
+deep pointed bites, which read as damage. Many points with a small wobble
+reads as paper. All of these shapes come from `tools/make_pattern.py`, so the
+page cannot drift into hand-tuned one-offs.
+
 ## Typography
 
 System fonts only. The constitution forbids external dependencies

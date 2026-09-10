@@ -4,6 +4,43 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.6.0 — 2026-09-10
+
+### Changed
+
+- **The content cards and palette swatches now speak the title-card language.**
+  The redesign in 0.5.0 converted the hero and section labels to jagged burst
+  cards but left everything below in the older rounded vocabulary, so the page
+  read as a hybrid. Both are converted:
+  - Cards are **torn-paper panels** — a ragged polygon whose edges wobble,
+    generated per card from its own seed so no two are alike, over an ink rim.
+  - The numbered badges are **small bursts** rather than discs.
+  - Swatch chips are bursts with an ink rim instead of organic blobs.
+- `tools/make_pattern.py` gained `ragged_rect()` and a round `badge` burst, so
+  every shape on the page still comes from one generator and one seeded RNG.
+
+### Fixed
+
+- **Card badges were being sliced in half by their own card.** `clip-path`
+  clips absolutely positioned descendants, so while the badge was a child of
+  the clipped panel the card's torn edge cut straight through it and it
+  rendered as a pennant. The clipped rim/fill pair now lives in its own
+  `.card__panel`, with the badge a sibling of it. Guarded by `T-102`.
+- **Card fill overflowed its panel by twice its margin.** `height: 100%` plus
+  `margin: 4px` makes a 212px-tall fill inside a 204px card; the clip then
+  carved wedges out of the edges. Flex sizing accounts for margins correctly.
+
+### Notes
+
+- The first ragged edge used 7 points per side at 2.4% wobble, which on a
+  344px card is a 16px excursion across 29px of travel — it read as bite marks
+  rather than a tear. Amplitude and frequency have to be read together: 11
+  points at 1.5% reads as paper. The reasoning is recorded in
+  `ragged_rect()`'s docstring rather than left as bare constants.
+- Three new checks (`T-102`–`T-104`) pin the layering, the real-background
+  rule, and the use of generated shapes. `T-102` was verified against a
+  deliberately reintroduced defect — a guard that cannot fail proves nothing.
+
 ## 0.5.0 — 2026-09-10
 
 ### Changed
