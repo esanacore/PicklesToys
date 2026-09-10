@@ -7,9 +7,11 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
 - [ ] **Contact email.** Replace `CONTACT-EMAIL-TBD` in `site/index.html` with
       a real `mailto:` link. `T-050` accepts either the marked placeholder or a
       real address, so the site stays honest until this lands.
-- [ ] **Registrar and DNS host for picklestoys.com.** Fill in the TBDs at the
-      bottom of `docs/DOMAIN_SETUP.md`; it determines which control panel the
-      DNS records get created in.
+- [x] **DNS host identified: GoDaddy** (2026-09-10, from the live
+      nameservers `ns37/ns38.domaincontrol.com`). `docs/DOMAIN_SETUP.md` now
+      carries GoDaddy-specific steps. Still worth recording the **expiry
+      date** there, and confirming the registrar is GoDaddy too — the
+      nameservers only prove where DNS is hosted.
 - [ ] **Decide the actual product line.** The site describes an intent
       (handmade, small batch, built to be played with) but names no products,
       because none exist yet.

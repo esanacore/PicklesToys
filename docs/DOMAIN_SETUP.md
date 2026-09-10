@@ -77,12 +77,44 @@ Then confirm the deploy is actually current — that the live page is this
 repository's `site/index.html` and not a cached placeholder from the
 registrar's parking page.
 
-## Registrar
+## Registrar and DNS host
 
-`picklestoys.com` was renewed by the owner. Where it is registered and where
-its DNS is hosted are not recorded here yet — fill this in once confirmed, as
-it determines which control panel step 1 happens in.
+- **DNS host: GoDaddy** — confirmed 2026-09-10 from the live nameservers:
 
-- Registrar: **TBD**
-- DNS host: **TBD**
-- Expiry: **TBD**
+  ```bash
+  nslookup -type=NS picklestoys.com
+  # picklestoys.com  nameserver = ns37.domaincontrol.com
+  # picklestoys.com  nameserver = ns38.domaincontrol.com
+  ```
+
+  `domaincontrol.com` is GoDaddy's nameserver domain, so step 1 happens in
+  the GoDaddy DNS panel, **not** Cloudflare — unlike gentletable.com.
+- **Registrar: almost certainly GoDaddy**, but strictly speaking the
+  nameservers only prove where DNS is *hosted*. It is possible (though
+  unusual) to register elsewhere and point at GoDaddy's nameservers. Confirm
+  in the account before relying on it for renewal.
+- **Expiry: TBD** — visible on the GoDaddy domain page; worth recording here,
+  since a lapsed domain is the one failure no amount of repository hygiene
+  protects against.
+
+### The Cloudflare warning does not apply here
+
+The grey-cloud/orange-cloud proxying caveat elsewhere in this document is a
+Cloudflare concern. GoDaddy's DNS does not proxy, so there is no equivalent
+setting to get wrong. Keep the warning in place in case the domain is ever
+moved to Cloudflare to match gentletable.com.
+
+### Where the records go in GoDaddy
+
+**Domain portfolio → picklestoys.com → DNS → DNS Records.**
+
+GoDaddy pre-populates a parked `A` record on `@` pointing at its own parking
+IP, and often a `CNAME` on `www` pointing to `@`. Edit the existing `@` record
+to the first GitHub address and **Add** the other three — GoDaddy allows
+multiple `A` records on the same name, which is what GitHub's anycast set
+needs. Delete any leftover parking record that does not point at one of the
+four addresses, or the domain will intermittently serve GoDaddy's parking
+page instead of the site.
+
+GoDaddy's TTL default of 1 hour is fine. Propagation is usually minutes, but
+allow up to the TTL before concluding something is wrong.
