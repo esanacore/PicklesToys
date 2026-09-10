@@ -4,6 +4,44 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## 0.8.0 — 2026-09-10
+
+### Changed
+
+- **The site is repositioned for adult collectors.** The product decision
+  landed today: collector pieces, not children's toys, in mixed media with a
+  large 3D-printed component. Three things on the page contradicted that and
+  are rewritten.
+- **Card 03 was the direct contradiction.** It read *"Built to be wrecked —
+  these are toys, not shelf pieces"*, which is a children's-toy pitch and the
+  opposite of the decision. It is now **"Originals, not licenses"**, which is
+  both true and the actual differentiator in a category full of bootlegs.
+- **"Handmade" became "hand-finished" throughout** — hero, `<title>`, meta
+  description, all Open Graph and Twitter tags, the footer, the social card,
+  and the docs. With 3D printing central to the process, "handmade" overstated
+  the handwork, and not overstating things is what most of this repository's
+  test suite exists to enforce. Card 01 now says what actually happens:
+  *"Modelled and printed, or cut and sewn — then sanded, primed, and painted
+  one at a time."*
+- The hero lede and the "look" section now describe pieces made to be looked
+  at rather than played with, and name the mixed process honestly.
+- `T-031` asserts the hand-finishing claim rather than grepping for
+  "handmade", and `FR-002-AC-1` moved with it.
+
+### Notes
+
+- **The audience choice is a regulatory one, not a marketing one.** In the US
+  a children's product means designed or intended primarily for ages 12 and
+  under, and that triggers CPSIA: third-party lab testing, a Children's
+  Product Certificate, permanent tracking labels, ASTM F963. Collector pieces
+  carry none of it. `docs/BRAND.md` records the reasoning.
+- The framing has to be *genuine* to hold — a "14+" label on something that
+  plainly reads as a kids' toy does not work, which is why this was a copy and
+  design change rather than a disclaimer. Still worth a qualified check before
+  anything is sold; that is tracked in `TODO.md`.
+- `site/og-image.png` regenerated from the edited source via
+  `tools/make_og_image.py`.
+
 ## 0.7.1 — 2026-09-10
 
 ### Fixed

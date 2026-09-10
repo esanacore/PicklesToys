@@ -20,8 +20,11 @@ Each requirement carries a stable ID and explicit acceptance criteria. The mappi
 
 ## Product Summary
 
-A single-page placeholder website for **PicklesToys**, a handmade small-batch
-toy workshop that has not launched. Published via GitHub Pages at
+A single-page placeholder website for **PicklesToys**, a hand-finished
+small-batch toy workshop that has not launched. As of 2026-09-10 the pieces
+are aimed at **adult collectors**, not children, and are mixed media with a
+large 3D-printed component — which is why the page claims hand *finishing*
+rather than handmade. Published via GitHub Pages at
 `picklestoys.com`. The target reader is anyone who types the domain in early —
 a friend, a potential stockist, a curious visitor. The release goal is a page
 that is honest about the stage the business is at, has real visual identity,
@@ -45,7 +48,7 @@ requirements below exist specifically to keep that true as the site is edited.
 
 - Level: `MUST`
 - Acceptance criteria:
-  - `FR-002-AC-1`: the page says it is not open yet, and describes handmade production and small batches.
+  - `FR-002-AC-1`: the page says it is not open yet, and describes hand finishing and small batches. (Was "handmade" until 2026-09-10; with 3D printing central to the process, that claim overstated the handwork.)
 
 **FR-003** The page never advertises commerce that does not exist.
 

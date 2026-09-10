@@ -4,8 +4,9 @@ This repository follows Eric's Engineering Constitution.
 
 ## What This Repo Is
 
-The website for PicklesToys — a handmade, small-batch toy workshop that has
-not launched yet. Static HTML/CSS/JS in `site/`, no build step, no runtime
+The website for PicklesToys — a hand-finished, small-batch toy workshop that
+has not launched yet. The pieces are made for **adult collectors**, not
+children (decided 2026-09-10), across mixed media with a lot of 3D printing. Static HTML/CSS/JS in `site/`, no build step, no runtime
 dependencies. Publishing is push-to-deploy: every push to `main` triggers
 `.github/workflows/deploy-pages.yml`, which runs `tests/test_site.sh` and
 deploys `site/` to GitHub Pages.

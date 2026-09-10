@@ -117,6 +117,29 @@ cream in dark mode. Cream on bright yellow is **1.25:1**. It shipped in 0.1.0
 and survived three releases and a careful hand-audit before
 `tests/test_layout.sh` measured it. `T-077` now guards it structurally.
 
+## Who this is for
+
+**Adult collectors, decided 2026-09-10.** Not children. The distinction is not
+marketing positioning — in the US it is the line between a children's product,
+which carries the whole CPSIA regime (third-party lab testing, a Children's
+Product Certificate, permanent tracking labels, ASTM F963), and a collectible,
+which does not.
+
+Two things follow, and both constrain the design rather than just the copy:
+
+- **The adult framing has to be genuine.** A "14+" sticker on something that
+  plainly reads as a kids' toy does not hold up. Design, price, and how the
+  site talks all have to point the same way. That is why card 03 stopped
+  saying "these are toys, not shelf pieces" — it was the opposite claim.
+- **Say hand-*finished*, not handmade.** The process is substantially 3D
+  printing, then sanding, priming and painting by hand. "Handmade" overstates
+  it, and this site has a whole test suite built on not overstating things.
+  `T-031` asserts the finishing claim.
+
+The pieces are still *toys* — "art toy" and "designer toy" are the established
+words for exactly this — so the vocabulary does not need softening. It is the
+audience that is adult, not the object that is serious.
+
 ## The mark
 
 A pickle jar. It appears twice, drawn differently for each job:

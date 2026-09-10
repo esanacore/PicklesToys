@@ -12,9 +12,9 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
       carries GoDaddy-specific steps. Still worth recording the **expiry
       date** there, and confirming the registrar is GoDaddy too — the
       nameservers only prove where DNS is hosted.
-- [ ] **Decide the actual product line.** The site describes an intent
-      (handmade, small batch, built to be played with) but names no products,
-      because none exist yet.
+- [x] **Product line decided 2026-09-10: adult collector pieces**, mixed media
+      with a large 3D-printed component. The site describes that intent but
+      names no products, because none exist yet.
 
 ## Launch the site at the domain
 
@@ -47,15 +47,31 @@ Tracked work for PicklesToys. Items are grouped by what unblocks them.
       or keep adding structural guards per defect as `T-076`/`T-077` do. Low
       risk while the page is this small; revisit if the site grows.
 
-## Business questions worth answering before building more
+## Business questions
 
-- [ ] What is actually being made first — plush, wood, resin, something else?
-      Materials change photography, shipping, safety labelling, and price.
-- [ ] **Toy safety.** Anything sold as a children's toy in the US falls under
-      CPSIA: third-party testing, tracking labels, and a Children's Product
-      Certificate. If the intended buyer is adult collectors, the rules differ
-      substantially. This decision shapes the product, not just the paperwork.
+- [x] **Who it is for: adult collectors, not children** (2026-09-10). This is
+      the decision that removes the CPSIA children's-product regime — no
+      third-party lab testing, no Children's Product Certificate, no tracking
+      labels, no ASTM F963. It is also why the page now talks about shelves
+      rather than being wrecked.
+- [x] **Materials: mixed, with a lot of 3D printing** (2026-09-10). Hence
+      "hand-finished" rather than "handmade" — the page should not claim more
+      handwork than the process involves.
+- [ ] **The adult framing has to be genuine, not a label.** "Not for children"
+      on something that plainly reads as a kids' toy does not hold up: design,
+      marketing, and price all have to point the same way. Worth a real check
+      with someone qualified before money changes hands — this is the one
+      remaining regulatory question, and it is a judgement call, not a form.
+- [ ] **Age marking at point of sale.** Not needed on the site while nothing is
+      for sale, but the listings and packaging will need it. Decide 14+ or 18+.
+- [ ] **Resin safety, if resin printing is in the mix.** Uncured photopolymer
+      is a skin sensitiser; pieces must be fully cured before they go out, and
+      the workspace needs ventilation. This is a maker-safety issue rather than
+      a product-compliance one, but it is real.
 - [ ] Where does selling happen — this site, or an existing marketplace? A
       static GitHub Pages site cannot take payments; that would mean either an
       embedded third-party checkout (breaking the dependency-free rule) or a
-      move to the Next.js/Vercel shape `gentle-table` uses.
+      move to the Next.js/Vercel shape `gentle-table` uses. Marketplaces
+      (Etsy, a designer-toy shop) sidestep both and are the usual first step.
+- [ ] **First actual piece.** Nothing on the site can name a product until one
+      exists. That is the next real milestone.

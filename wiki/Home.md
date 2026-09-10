@@ -1,6 +1,6 @@
 # Home
 
-**PicklesToys** is a handmade, small-batch toy workshop in the making, and this
+**PicklesToys** is a hand-finished, small-batch toy workshop in the making, and this
 repository is its website. The business has not launched — there are no
 products, no prices, and nothing for sale — so the site is a deliberately
 honest placeholder that says exactly that, built so the real thing can grow

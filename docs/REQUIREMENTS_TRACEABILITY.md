@@ -24,7 +24,7 @@ A requirement with no verifying test is a coverage gap. Record it in `docs/TEST_
 | Requirement ID | Level | Description | Acceptance Criteria | Verifying Tests | Status |
 | --- | --- | --- | --- | --- | --- |
 | FR-001 | MUST | Every promised section is present and nav links resolve | FR-001-AC-1 | T-020, T-021, T-022, T-023 | Verified |
-| FR-002 | MUST | Page states it is not open; describes handmade small-batch intent | FR-002-AC-1 | T-030, T-031, T-032 | Verified |
+| FR-002 | MUST | Page states it is not open; describes hand-finished small-batch intent | FR-002-AC-1 | T-030, T-031, T-032 | Verified |
 | FR-003 | MUST | No commerce that does not exist | FR-003-AC-1, FR-003-AC-2 | T-033, T-034 | Verified |
 | FR-004 | MUST | Unavailable facts are marked placeholders, never invented | FR-004-AC-1, FR-004-AC-2, FR-004-AC-3 | T-050 (real mailto), T-051 (text matches target), T-052b (any reintroduced TBD is flagged), T-052, T-053 | Verified |
 | FR-005 | MUST | Era-inspired only; no third-party franchise or character names | FR-005-AC-1, FR-005-AC-2, FR-005-AC-3 | T-040, T-041, T-042 | Verified |

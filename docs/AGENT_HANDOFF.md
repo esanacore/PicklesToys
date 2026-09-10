@@ -4,8 +4,9 @@ Context an agent picking this repository up needs before making changes.
 
 ## What this is
 
-The website for PicklesToys, a handmade small-batch toy workshop that **has not
-launched**. Static HTML/CSS/JS in `site/`, no build step, no dependencies,
+The website for PicklesToys, a hand-finished small-batch toy workshop that
+**has not launched**. Pieces are for **adult collectors**, not children —
+mixed media with a lot of 3D printing. Static HTML/CSS/JS in `site/`, no build step, no dependencies,
 published to GitHub Pages on every push to `main`.
 
 Start with `README.md`, then `docs/BRAND.md`. The second one is not optional —
@@ -89,7 +90,7 @@ a test edit.
 
 ## Current state
 
-Version 0.7.1. The site builds, all 66 structural and 20 browser checks pass,
+Version 0.8.0. The site builds, all 66 structural and 20 browser checks pass,
 and all 19 requirements have verifying tests.
 
 **Live at https://picklestoys.com since 2026-09-10**, over HTTPS with a valid

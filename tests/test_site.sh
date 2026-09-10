@@ -71,7 +71,10 @@ check T-023 "every nav link resolves" bash -c '
 # exist so a future edit cannot quietly add invented commerce copy: the site
 # must keep saying it is not open until someone deliberately changes a test.
 check T-030 "states it is not open yet"    grep -qi 'not open yet' "$index"
-check T-031 "describes handmade toys"      grep -qi 'handmade' "$index"
+# Was 'handmade' until 2026-09-10. The work is substantially 3D printing plus
+# hand finishing, so "handmade" overstated it — this asserts the claim the page
+# can actually stand behind.
+check T-031 "describes hand finishing"     grep -qiE 'hand-finished|finished by hand' "$index"
 check T-032 "describes small batches"      grep -qi 'small batch' "$index"
 check T-033 "no invented prices" bash -c '
   ! grep -qE "\\\$[0-9]" "'"$index"'"

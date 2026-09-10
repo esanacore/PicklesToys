@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="PicklesToys — handmade toys, made in small batches. Not open yet.">
-  <title>PicklesToys — Handmade, Small-Batch Toys</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="PicklesToys — hand-finished toys, made in small batches. Not open yet.">
+  <title>PicklesToys — Hand-Finished, Small-Batch Toys</title>
 
   <!--
     Social sharing card, 1200x630 (the size Facebook, LinkedIn, Slack, iMessage
@@ -43,7 +43,7 @@
 
     <text x="600" y="308" text-anchor="middle"
           font-family="Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
-          font-size="58" font-weight="800" letter-spacing="-1.8" fill="#fffaf0">Handmade toys,</text>
+          font-size="58" font-weight="800" letter-spacing="-1.8" fill="#fffaf0">Hand-finished toys,</text>
     <text x="600" y="376" text-anchor="middle"
           font-family="Segoe UI, system-ui, -apple-system, Helvetica Neue, Arial, sans-serif"
           font-size="58" font-weight="800" letter-spacing="-1.8" fill="#fffaf0">made in small batches.</text>
