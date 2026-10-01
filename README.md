@@ -31,6 +31,15 @@ Open `site/index.html` in a browser, or serve the directory:
 python -m http.server 8123 --directory site
 ```
 
+### Offline demo copy
+
+[`demo.html`](demo.html) is a single-file copy of the site — styles, script and
+favicon inlined — that opens straight from `file://` with no server or network,
+for offline review. It carries a notice that the live site at
+[picklestoys.com](https://picklestoys.com/) is the canonical version. It lives in
+the repository root, outside `site/`, so GitHub Pages does not publish it.
+**Any change to `site/` must be mirrored into `demo.html` in the same change.**
+
 ## Test
 
 ```bash
