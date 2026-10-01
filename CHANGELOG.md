@@ -4,6 +4,21 @@ All notable user-facing changes to this project should be documented in this fil
 
 This project follows semantic versioning.
 
+## Unreleased
+
+### Added
+
+- **`demo.html`, an offline copy of the site.** One self-contained file with
+  `site/styles.css`, `site/app.js` and the SVG favicon inlined, so the page
+  opens from `file://` with no server or network. A notice at the top labels
+  it as an offline review copy and links the live site as canonical. Crawler
+  and social-card metadata is left out; nothing else on the page changes. It
+  sits outside `site/`, so GitHub Pages does not publish it. Linked from
+  `README.md`.
+- Agent instruction files (`AGENTS.md`, `CLAUDE.md`, `.github/CONTRIBUTING.md`,
+  `docs/HELP.md`, Solon) now carry the rule to keep the demo page current:
+  a site change not mirrored into `demo.html` is an incomplete change.
+
 ## 0.8.0 — 2026-09-10
 
 ### Changed

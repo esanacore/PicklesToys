@@ -56,6 +56,10 @@ Hold every change to the Constitution's principles:
   concrete fix inline.
 - Distinguish **must-fix** (a Constitution requirement is unmet) from
   **recommended** (an opportunity worth recording in `TODO.md`).
+- Expect every change to keep the demo page current: when a change alters
+  user-facing behavior and the repository has a `demo.html`, it must update it
+  in the same change (`constitution/DOCUMENTATION.md`, "Demo Page"); flag one
+  that leaves the demo showing the old behavior.
 - When you approve work, summarize: what changed, tests run, documentation
   updated, security considerations, and notable follow-up work.
 

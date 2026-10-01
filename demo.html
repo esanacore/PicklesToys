@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PicklesToys — Hand-Finished, Small-Batch Toys (offline copy)</title>
+  <meta name="description" content="PicklesToys makes hand-finished, small-batch toys with a scrappy 90s-cartoon spirit — original characters for people who never grew out of them. The workshop is still being built; nothing is for sale yet.">
+  <!--
+    Offline review copy of picklestoys.com, generated from site/index.html,
+    site/styles.css and site/app.js. Styles and scripts are inlined so this one
+    file opens from file:// with no server or network. The canonical, Open
+    Graph and Twitter metadata are omitted (they point crawlers at the live
+    site and do nothing offline); the favicon is inlined as a data: URI.
+    Keep it in step with site/ — a change to the site that is not mirrored
+    here leaves this copy showing the old page.
+  -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="PicklesToys"%3E %3Ctitle%3EPicklesToys%3C/title%3E %3Crect width="64" height="64" rx="14" fill="#c8431b"/%3E %3Crect x="21" y="9" width="22" height="8" rx="3" fill="#fbf3e4"/%3E %3Cpath d="M16 20h32v27c0 5-4 9-9 9H25c-5 0-9-4-9-9V20z" fill="#fbf3e4"/%3E %3Cellipse cx="32" cy="37" rx="7" ry="12" fill="#5e8c1e" transform="rotate%28-13 32 37%29"/%3E %3C/svg%3E" type="image/svg+xml">
+  <meta name="theme-color" content="#fbf3e4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16130f" media="(prefers-color-scheme: dark)">
+
+  <script>
+    // Apply the saved or system theme before first paint so the page never
+    // flashes the wrong mode. Mirrors 702withtheview.com and gentletable.com.
+    (function () {
+      // Marks that JS is running, so the reveal animation only hides content
+      // it can actually reveal again. Set here rather than in app.js so the
+      // class lands before first paint and nothing flashes in then out.
+      document.documentElement.classList.add("js");
+      try {
+        var saved = localStorage.getItem("pickles-theme");
+        if (saved === "dark" || saved === "light") {
+          document.documentElement.dataset.theme = saved;
+        }
+      } catch (e) { /* private mode — the toggle still works for this visit */ }
+    })();
+  </script>
+
+  <style>
+/* ============================================================
+   PicklesToys — design system
+
+   Visual language: early-90s cartoon art direction. Chunky ink outlines,
+   hard offset shadows (sticker/screen-print feel), lumpy asymmetric radii,
+   halftone dots, clashing saturated colors on warm paper.
+
+   Dependency-free: system fonts only, no CDN, no webfont
+   (constitution Principle 7). tests/test_site.sh T-060 enforces this.
+   ============================================================ */
+
+/* ------------------------------------------------------------------
+   Colour tokens.
+
+   Light mode is warm paper with near-black ink. Dark mode keeps the same
+   palette identity but lifts each accent, because the light-mode accents
+   are tuned for contrast against cream and go muddy on near-black.
+
+   Accents used as TEXT are contrast-checked against their own background
+   (>= 4.5:1). --sun is decorative only: at 4.4:1 on ink it is fine as a
+   fill behind dark text but never as text itself.
+   ------------------------------------------------------------------ */
+
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --paper: #fbf3e4;
+  --paper-tint: #f4e8d2;
+  --surface: #fffaf0;
+  --ink: #1e1a17;
+  --ink-soft: #574e44;
+
+  --orange: #c8431b;
+  /* Orange as small TEXT needs a darker mix: #c8431b is 4.45:1 on paper and
+     only 4.05:1 on the tinted band, both under the 4.5:1 AA floor for the
+     14px bold overlines. Same family, legible weight. Fills and large display
+     type keep --orange, which is why this is a separate token rather than a
+     darkening of the brand color. */
+  --orange-text: #a83714;
+  --teal: #0e6f6b;
+  --grape: #66399b;
+  --sun: #f5c518;
+  --lime: #4e7615;
+
+  --dot: rgba(30, 26, 23, 0.16);
+  --shadow-ink: #1e1a17;
+  --on-accent: #fffaf0;
+  /* Deliberately NOT redefined per theme. --sun is a bright yellow in both
+     themes, so text on it must be dark in both; --on-accent inverts with the
+     theme and is therefore wrong here. See the .card__num note below. */
+  --on-sun: #1e1a17;
+}
+
+/* Follows the operating system unless the reader has chosen a theme,
+   in which case data-theme on <html> wins. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --paper: #16130f;
+    --paper-tint: #201b15;
+    --surface: #211c16;
+    --ink: #fbf3e4;
+    --ink-soft: #b3a794;
+
+    --orange: #ff8a5c;
+    /* On near-black the accent is already well past AA, so text and fill
+       share one value here. */
+    --orange-text: #ff8a5c;
+    --teal: #4fd1ca;
+    --grape: #c39bf5;
+    --sun: #ffd84d;
+    --lime: #a6d65e;
+
+    --dot: rgba(251, 243, 228, 0.14);
+    --shadow-ink: #000000;
+    --on-accent: #16130f;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #16130f;
+  --paper-tint: #201b15;
+  --surface: #211c16;
+  --ink: #fbf3e4;
+  --ink-soft: #b3a794;
+
+  --orange: #ff8a5c;
+  --orange-text: #ff8a5c;
+  --teal: #4fd1ca;
+  --grape: #c39bf5;
+  --sun: #ffd84d;
+  --lime: #a6d65e;
+
+  --dot: rgba(251, 243, 228, 0.14);
+  --shadow-ink: #000000;
+  --on-accent: #16130f;
+}
+
+/* BEGIN GENERATED doodle field — tools/make_pattern.py, do not edit by hand */
+
+/* Layer sizes are coprime so the field's visual repeat lands far past
+   any real viewport width. See tools/make_pattern.py. */
+:root {
+  --doodle-size: 180px 180px, 127px 127px, 151px 151px;
+  --doodle-light:
+    url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22180%22%20viewBox%3D%220%200%20180%20180%22%3E%3Cg%20stroke%3D%22%231e1a17%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22%231e1a17%22%20opacity%3D%220.15%22%3E%3Cg%20transform%3D%22translate%2843.0%2C164.4%29%20rotate%28220%29%20scale%281.45%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2843.0%2C-15.6%29%20rotate%28220%29%20scale%281.45%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28154.0%2C65.0%29%20rotate%2819%29%20scale%280.80%29%22%3E%3Cpath%20d%3D%22M-7%20-3q7%20-6%2014%200q-7%206%20-14%200z%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28175.1%2C95.6%29%20rotate%28163%29%20scale%281.16%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-4.9%2C95.6%29%20rotate%28163%29%20scale%281.16%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28139.9%2C140.4%29%20rotate%28151%29%20scale%281.11%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2865.2%2C86.7%29%20rotate%2833%29%20scale%281.31%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2864.5%2C32.2%29%20rotate%28353%29%20scale%280.84%29%22%3E%3Cpath%20d%3D%22M0%20-5v10M-5%200h10%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2882.1%2C19.4%29%20rotate%2841%29%20scale%281.22%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2815.2%2C109.0%29%20rotate%28333%29%20scale%280.95%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2863.5%2C56.3%29%20rotate%28184%29%20scale%281.28%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2828.5%2C157.3%29%20rotate%28225%29%20scale%281.03%29%22%3E%3Cpath%20d%3D%22M-7%20-3q7%20-6%2014%200q-7%206%20-14%200z%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2887.2%2C32.1%29%20rotate%2891%29%20scale%281.44%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2888.7%2C31.5%29%20rotate%28156%29%20scale%280.88%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28124.5%2C136.8%29%20rotate%2852%29%20scale%281.16%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28158.9%2C66.8%29%20rotate%28146%29%20scale%281.23%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2890.7%2C86.7%29%20rotate%28283%29%20scale%281.47%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28159.3%2C37.3%29%20rotate%28100%29%20scale%281.46%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.6%2C9.4%29%20rotate%28106%29%20scale%281.37%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.6%2C189.4%29%20rotate%28106%29%20scale%281.37%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.9%2C91.7%29%20rotate%28272%29%20scale%281.06%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2863.4%2C37.0%29%20rotate%28313%29%20scale%280.90%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28125.9%2C79.3%29%20rotate%2897%29%20scale%281.14%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2818.1%2C69.5%29%20rotate%28168%29%20scale%281.31%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28139.3%2C41.7%29%20rotate%28247%29%20scale%281.19%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28133.6%2C148.1%29%20rotate%28203%29%20scale%281.39%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28134.5%2C78.4%29%20rotate%28358%29%20scale%281.43%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'),
+    url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22127%22%20height%3D%22127%22%20viewBox%3D%220%200%20127%20127%22%3E%3Cg%20stroke%3D%22%2366399b%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22%2366399b%22%20opacity%3D%220.22%22%3E%3Cg%20transform%3D%22translate%2831.5%2C11.5%29%20rotate%2816%29%20scale%281.36%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2831.5%2C138.5%29%20rotate%2816%29%20scale%281.36%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28101.7%2C89.6%29%20rotate%2815%29%20scale%280.96%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28109.5%2C122.8%29%20rotate%28323%29%20scale%281.04%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28109.5%2C-4.2%29%20rotate%28323%29%20scale%281.04%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28122.4%2C57.9%29%20rotate%28282%29%20scale%281.23%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-4.6%2C57.9%29%20rotate%28282%29%20scale%281.23%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28120.5%2C125.7%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28120.5%2C-1.3%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-6.5%2C125.7%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-6.5%2C-1.3%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28122.1%2C71.5%29%20rotate%28141%29%20scale%281.17%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-4.9%2C71.5%29%20rotate%28141%29%20scale%281.17%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2871.0%2C105.5%29%20rotate%2884%29%20scale%280.88%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2829.3%2C20.7%29%20rotate%28236%29%20scale%281.37%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28118.5%2C84.3%29%20rotate%28339%29%20scale%280.80%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-8.5%2C84.3%29%20rotate%28339%29%20scale%280.80%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2817.4%2C51.0%29%20rotate%28156%29%20scale%281.15%29%22%3E%3Cpath%20d%3D%22M0%20-5v10M-5%200h10%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2812.7%2C103.4%29%20rotate%28167%29%20scale%281.26%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28139.7%2C103.4%29%20rotate%28167%29%20scale%281.26%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2845.8%2C43.1%29%20rotate%28354%29%20scale%281.13%29%22%3E%3Cpath%20d%3D%22M0%20-5v10M-5%200h10%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2827.9%2C21.4%29%20rotate%2848%29%20scale%280.95%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2886.5%2C103.1%29%20rotate%28328%29%20scale%280.90%29%22%3E%3Cpath%20d%3D%22M-7%20-3q7%20-6%2014%200q-7%206%20-14%200z%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2888.5%2C107.1%29%20rotate%2887%29%20scale%281.44%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2859.8%2C47.4%29%20rotate%28289%29%20scale%280.86%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'),
+    url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22151%22%20height%3D%22151%22%20viewBox%3D%220%200%20151%20151%22%3E%3Cg%20stroke%3D%22%230e6f6b%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22%230e6f6b%22%20opacity%3D%220.2%22%3E%3Cg%20transform%3D%22translate%2838.7%2C13.0%29%20rotate%2839%29%20scale%281.22%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2838.7%2C164.0%29%20rotate%2839%29%20scale%281.22%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.8%2C28.5%29%20rotate%2871%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28127.5%2C4.9%29%20rotate%28139%29%20scale%281.00%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28127.5%2C155.9%29%20rotate%28139%29%20scale%281.00%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2832.9%2C124.6%29%20rotate%2842%29%20scale%280.91%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2823.0%2C56.1%29%20rotate%28332%29%20scale%280.79%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28102.9%2C112.9%29%20rotate%2896%29%20scale%281.03%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2873.4%2C36.8%29%20rotate%28154%29%20scale%281.14%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2880.2%2C1.2%29%20rotate%28266%29%20scale%281.20%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2880.2%2C152.2%29%20rotate%28266%29%20scale%281.20%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%287.2%2C35.6%29%20rotate%2891%29%20scale%280.99%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28158.2%2C35.6%29%20rotate%2891%29%20scale%280.99%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2817.7%2C20.5%29%20rotate%28272%29%20scale%280.81%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2850.0%2C110.3%29%20rotate%28207%29%20scale%281.41%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2861.2%2C86.5%29%20rotate%28145%29%20scale%280.92%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+  --doodle-dark:
+    url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22180%22%20viewBox%3D%220%200%20180%20180%22%3E%3Cg%20stroke%3D%22%23fbf3e4%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22%23fbf3e4%22%20opacity%3D%220.1%22%3E%3Cg%20transform%3D%22translate%2843.0%2C164.4%29%20rotate%28220%29%20scale%281.45%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2843.0%2C-15.6%29%20rotate%28220%29%20scale%281.45%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28154.0%2C65.0%29%20rotate%2819%29%20scale%280.80%29%22%3E%3Cpath%20d%3D%22M-7%20-3q7%20-6%2014%200q-7%206%20-14%200z%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28175.1%2C95.6%29%20rotate%28163%29%20scale%281.16%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-4.9%2C95.6%29%20rotate%28163%29%20scale%281.16%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28139.9%2C140.4%29%20rotate%28151%29%20scale%281.11%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2865.2%2C86.7%29%20rotate%2833%29%20scale%281.31%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2864.5%2C32.2%29%20rotate%28353%29%20scale%280.84%29%22%3E%3Cpath%20d%3D%22M0%20-5v10M-5%200h10%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2882.1%2C19.4%29%20rotate%2841%29%20scale%281.22%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2815.2%2C109.0%29%20rotate%28333%29%20scale%280.95%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2863.5%2C56.3%29%20rotate%28184%29%20scale%281.28%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2828.5%2C157.3%29%20rotate%28225%29%20scale%281.03%29%22%3E%3Cpath%20d%3D%22M-7%20-3q7%20-6%2014%200q-7%206%20-14%200z%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2887.2%2C32.1%29%20rotate%2891%29%20scale%281.44%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2888.7%2C31.5%29%20rotate%28156%29%20scale%280.88%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28124.5%2C136.8%29%20rotate%2852%29%20scale%281.16%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28158.9%2C66.8%29%20rotate%28146%29%20scale%281.23%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2890.7%2C86.7%29%20rotate%28283%29%20scale%281.47%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28159.3%2C37.3%29%20rotate%28100%29%20scale%281.46%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.6%2C9.4%29%20rotate%28106%29%20scale%281.37%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.6%2C189.4%29%20rotate%28106%29%20scale%281.37%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.9%2C91.7%29%20rotate%28272%29%20scale%281.06%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2863.4%2C37.0%29%20rotate%28313%29%20scale%280.90%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28125.9%2C79.3%29%20rotate%2897%29%20scale%281.14%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2818.1%2C69.5%29%20rotate%28168%29%20scale%281.31%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28139.3%2C41.7%29%20rotate%28247%29%20scale%281.19%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28133.6%2C148.1%29%20rotate%28203%29%20scale%281.39%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28134.5%2C78.4%29%20rotate%28358%29%20scale%281.43%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'),
+    url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22127%22%20height%3D%22127%22%20viewBox%3D%220%200%20127%20127%22%3E%3Cg%20stroke%3D%22%23c39bf5%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22%23c39bf5%22%20opacity%3D%220.16%22%3E%3Cg%20transform%3D%22translate%2831.5%2C11.5%29%20rotate%2816%29%20scale%281.36%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2831.5%2C138.5%29%20rotate%2816%29%20scale%281.36%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28101.7%2C89.6%29%20rotate%2815%29%20scale%280.96%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28109.5%2C122.8%29%20rotate%28323%29%20scale%281.04%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28109.5%2C-4.2%29%20rotate%28323%29%20scale%281.04%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28122.4%2C57.9%29%20rotate%28282%29%20scale%281.23%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-4.6%2C57.9%29%20rotate%28282%29%20scale%281.23%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28120.5%2C125.7%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28120.5%2C-1.3%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-6.5%2C125.7%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-6.5%2C-1.3%29%20rotate%2864%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28122.1%2C71.5%29%20rotate%28141%29%20scale%281.17%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-4.9%2C71.5%29%20rotate%28141%29%20scale%281.17%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2871.0%2C105.5%29%20rotate%2884%29%20scale%280.88%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2829.3%2C20.7%29%20rotate%28236%29%20scale%281.37%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28118.5%2C84.3%29%20rotate%28339%29%20scale%280.80%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28-8.5%2C84.3%29%20rotate%28339%29%20scale%280.80%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2817.4%2C51.0%29%20rotate%28156%29%20scale%281.15%29%22%3E%3Cpath%20d%3D%22M0%20-5v10M-5%200h10%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2812.7%2C103.4%29%20rotate%28167%29%20scale%281.26%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28139.7%2C103.4%29%20rotate%28167%29%20scale%281.26%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2845.8%2C43.1%29%20rotate%28354%29%20scale%281.13%29%22%3E%3Cpath%20d%3D%22M0%20-5v10M-5%200h10%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2827.9%2C21.4%29%20rotate%2848%29%20scale%280.95%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2886.5%2C103.1%29%20rotate%28328%29%20scale%280.90%29%22%3E%3Cpath%20d%3D%22M-7%20-3q7%20-6%2014%200q-7%206%20-14%200z%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2888.5%2C107.1%29%20rotate%2887%29%20scale%281.44%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2859.8%2C47.4%29%20rotate%28289%29%20scale%280.86%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%222.2%22%20stroke%3D%22none%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'),
+    url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22151%22%20height%3D%22151%22%20viewBox%3D%220%200%20151%20151%22%3E%3Cg%20stroke%3D%22%234fd1ca%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20fill%3D%22%234fd1ca%22%20opacity%3D%220.14%22%3E%3Cg%20transform%3D%22translate%2838.7%2C13.0%29%20rotate%2839%29%20scale%281.22%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2838.7%2C164.0%29%20rotate%2839%29%20scale%281.22%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2837.8%2C28.5%29%20rotate%2871%29%20scale%281.10%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28127.5%2C4.9%29%20rotate%28139%29%20scale%281.00%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28127.5%2C155.9%29%20rotate%28139%29%20scale%281.00%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2832.9%2C124.6%29%20rotate%2842%29%20scale%280.91%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2823.0%2C56.1%29%20rotate%28332%29%20scale%280.79%29%22%3E%3Cpath%20d%3D%22M-5%20-6l5%206-5%206%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28102.9%2C112.9%29%20rotate%2896%29%20scale%281.03%29%22%3E%3Cpath%20d%3D%22M-5%20-5l10%2010M5%20-5l-10%2010%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2873.4%2C36.8%29%20rotate%28154%29%20scale%281.14%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2880.2%2C1.2%29%20rotate%28266%29%20scale%281.20%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2880.2%2C152.2%29%20rotate%28266%29%20scale%281.20%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%287.2%2C35.6%29%20rotate%2891%29%20scale%280.99%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28158.2%2C35.6%29%20rotate%2891%29%20scale%280.99%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2817.7%2C20.5%29%20rotate%28272%29%20scale%280.81%29%22%3E%3Ccircle%20cx%3D%220%22%20cy%3D%220%22%20r%3D%224.5%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2850.0%2C110.3%29%20rotate%28207%29%20scale%281.41%29%22%3E%3Cpath%20d%3D%22M-9%200c3-5%206%205%209%200s6-5%209%200%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2861.2%2C86.5%29%20rotate%28145%29%20scale%280.92%29%22%3E%3Cpath%20d%3D%22M-6%204c4-9%208%205%2012-4%22%20fill%3D%22none%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+  --doodle-field: var(--doodle-light);
+
+  /* Burst shapes for the title cards. See clip_path() for why these
+     are clip-paths and not inline SVG. */
+  --burst-hero: polygon(100.00% 54.46%, 83.41% 66.03%, 85.70% 84.23%, 68.97% 80.43%, 58.67% 100.00%, 46.24% 91.54%, 27.13% 99.80%, 26.93% 74.84%, 0.00% 73.72%, 21.04% 51.70%, 6.32% 34.68%, 31.81% 33.08%, 23.56% 0.00%, 48.88% 22.23%, 60.43% 4.75%, 67.57% 22.90%, 87.68% 21.89%, 84.94% 38.75%);
+  --burst-tag: polygon(100.00% 52.63%, 76.37% 60.92%, 95.19% 80.37%, 69.25% 75.29%, 70.06% 96.35%, 56.22% 80.21%, 43.41% 98.05%, 38.19% 83.41%, 9.43% 100.00%, 25.39% 70.91%, 9.24% 66.50%, 22.19% 53.30%, 0.00% 39.03%, 26.21% 37.49%, 15.17% 15.96%, 37.72% 26.13%, 41.56% 0.00%, 54.18% 27.22%, 74.50% 4.03%, 73.73% 29.49%, 99.61% 25.29%, 78.02% 46.33%);
+  --burst-badge: polygon(97.75% 53.10%, 87.18% 61.90%, 89.17% 74.29%, 78.97% 80.68%, 73.91% 91.04%, 60.37% 88.21%, 51.80% 100.00%, 40.65% 90.85%, 24.31% 98.69%, 28.67% 76.09%, 6.69% 77.15%, 21.54% 61.57%, 0.00% 54.66%, 14.75% 43.46%, 0.45% 25.84%, 22.18% 26.33%, 22.17% 5.60%, 43.25% 23.56%, 52.27% 0.00%, 60.49% 18.66%, 78.69% 7.32%, 77.75% 25.68%, 100.00% 24.21%, 82.08% 44.26%);
+
+  /* Ragged card panels: an edge that wobbles rather than a burst,
+     because these hold body copy. See ragged_rect(). */
+  --panel-1: polygon(0.00% 0.71%, 9.09% 2.20%, 18.18% 0.73%, 27.27% 2.56%, 36.36% 2.15%, 45.45% 1.08%, 54.55% 1.50%, 63.64% 0.66%, 72.73% 0.15%, 81.82% 2.61%, 90.91% 0.20%, 99.52% 0.00%, 98.51% 9.09%, 98.07% 18.18%, 99.55% 27.27%, 97.46% 36.36%, 98.58% 45.45%, 98.84% 54.55%, 97.37% 63.64%, 99.76% 72.73%, 97.06% 81.82%, 98.93% 90.91%, 100.00% 97.75%, 90.91% 98.18%, 81.82% 98.20%, 72.73% 98.58%, 63.64% 97.06%, 54.55% 98.66%, 45.45% 98.49%, 36.36% 99.34%, 27.27% 99.16%, 18.18% 97.61%, 9.09% 99.44%, 1.23% 100.00%, 2.93% 90.91%, 0.72% 81.82%, 2.68% 72.73%, 0.85% 63.64%, 1.41% 54.55%, 0.89% 45.45%, 2.66% 36.36%, 1.60% 27.27%, 1.18% 18.18%, 1.80% 9.09%);
+  --panel-2: polygon(0.00% 0.73%, 9.09% 1.09%, 18.18% 1.70%, 27.27% 1.56%, 36.36% 2.14%, 45.45% 2.46%, 54.55% 0.77%, 63.64% 2.13%, 72.73% 0.62%, 81.82% 2.71%, 90.91% 0.70%, 98.54% 0.00%, 99.76% 9.09%, 97.67% 18.18%, 99.23% 27.27%, 99.30% 36.36%, 99.31% 45.45%, 98.02% 54.55%, 99.25% 63.64%, 99.88% 72.73%, 98.74% 81.82%, 98.54% 90.91%, 100.00% 97.55%, 90.91% 97.31%, 81.82% 97.86%, 72.73% 98.72%, 63.64% 97.70%, 54.55% 99.24%, 45.45% 99.76%, 36.36% 99.00%, 27.27% 97.43%, 18.18% 98.23%, 9.09% 98.42%, 0.97% 100.00%, 0.39% 90.91%, 2.55% 81.82%, 0.93% 72.73%, 0.24% 63.64%, 1.92% 54.55%, 2.80% 45.45%, 0.22% 36.36%, 1.64% 27.27%, 1.40% 18.18%, 1.85% 9.09%);
+  --panel-3: polygon(0.00% 0.78%, 9.09% 2.43%, 18.18% 1.76%, 27.27% 2.78%, 36.36% 0.12%, 45.45% 0.70%, 54.55% 1.91%, 63.64% 1.58%, 72.73% 1.62%, 81.82% 0.26%, 90.91% 1.42%, 98.47% 0.00%, 99.39% 9.09%, 97.16% 18.18%, 97.20% 27.27%, 97.16% 36.36%, 99.85% 45.45%, 99.28% 54.55%, 98.21% 63.64%, 97.79% 72.73%, 97.96% 81.82%, 97.38% 90.91%, 100.00% 99.15%, 90.91% 98.14%, 81.82% 99.48%, 72.73% 99.35%, 63.64% 98.37%, 54.55% 98.79%, 45.45% 97.44%, 36.36% 97.63%, 27.27% 99.44%, 18.18% 98.55%, 9.09% 99.60%, 1.10% 100.00%, 0.69% 90.91%, 2.74% 81.82%, 2.58% 72.73%, 0.94% 63.64%, 2.35% 54.55%, 1.51% 45.45%, 2.72% 36.36%, 1.06% 27.27%, 2.19% 18.18%, 2.30% 9.09%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --doodle-field: var(--doodle-dark); }
+}
+
+:root[data-theme="dark"] { --doodle-field: var(--doodle-dark); }
+
+/* END GENERATED doodle field */
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  /* Doodle field: the busy scribbled ground early-90s title cards sat on.
+     Three seeded layers at coprime tile sizes, generated into the block
+     above by tools/make_pattern.py — do not hand-edit those URLs. */
+  background-image: var(--doodle-field);
+  background-size: var(--doodle-size);
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5em;
+  font-weight: 800;
+}
+
+h1 { font-size: clamp(2.4rem, 7vw, 4.4rem); }
+h2 { font-size: clamp(1.8rem, 4.2vw, 2.8rem); }
+h3 { font-size: 1.3rem; }
+
+p { margin: 0 0 1em; }
+
+a {
+  color: var(--ink);
+  text-underline-offset: 3px;
+}
+
+em { font-style: italic; }
+
+code {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.86em;
+  background: var(--paper-tint);
+  border: 1px solid var(--ink-soft);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.75rem 1.25rem;
+  z-index: 100;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* ------------------------------------------------------------------
+   Header
+   ------------------------------------------------------------------ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 0.85rem clamp(1rem, 4vw, 3rem);
+  background: var(--paper);
+  border-bottom: 3px solid var(--ink);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-right: auto;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+
+.wordmark__jar svg {
+  display: block;
+  width: 30px;
+  height: 33px;
+}
+
+.jar-lid   { fill: var(--orange); stroke: var(--ink); stroke-width: 2; }
+.jar-glass { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.jar-pickle { fill: var(--lime); stroke: var(--ink); stroke-width: 1.6; }
+
+.wordmark__toys {
+  color: var(--orange);
+}
+
+.nav__links {
+  display: flex;
+  gap: 1.1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.nav__links a {
+  text-decoration: none;
+  padding: 0.2rem 0;
+  border-bottom: 3px solid transparent;
+}
+
+.nav__links a:hover,
+.nav__links a.is-active {
+  border-bottom-color: var(--orange);
+}
+
+/* Hard-shadow "sticker" button, reused for the pill and cards. */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--surface);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--shadow-ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.theme-toggle:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--shadow-ink);
+}
+
+.theme-toggle:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--shadow-ink);
+}
+
+.theme-toggle__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--sun);
+}
+
+:root[data-theme="dark"] .theme-toggle__dot,
+:root:not([data-theme="light"]) .theme-toggle__dot {
+  background: var(--grape);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .theme-toggle__dot {
+    background: var(--sun);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Hero
+   ------------------------------------------------------------------ */
+
+.hero {
+  position: relative;
+  padding: clamp(3.5rem, 11vw, 8rem) clamp(1rem, 4vw, 3rem)
+    clamp(3rem, 8vw, 6rem);
+}
+
+.hero__inner {
+  position: relative;
+  max-width: 68rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--surface);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 3px 3px 0 var(--shadow-ink);
+  transform: rotate(-1.5deg);
+  margin-bottom: 1.75rem;
+}
+
+.pill__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  border: 2px solid var(--ink);
+}
+
+.hero__title {
+  margin-bottom: 1.2rem;
+}
+
+/* Underline drawn as a wobbly brush stroke rather than a text-decoration
+   rule, so it keeps the hand-made feel at any font size. */
+.squiggle {
+  position: relative;
+  white-space: nowrap;
+}
+
+.squiggle::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  bottom: 0.02em;
+  height: 0.24em;
+  background: var(--sun);
+  border-radius: 60% 40% 55% 45% / 100% 100% 100% 100%;
+  z-index: -1;
+}
+
+.hero__lede {
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  max-width: 52ch;
+  text-align: center;
+}
+
+.hero__meta {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+
+/* ------------------------------------------------------------------
+   Title card
+
+   The reference language: a torn paper burst sitting on a scribbled
+   field, with the words inside it.
+
+   Built from two nested elements clipped to the same polygon rather than
+   an inline <svg> behind the text. The shape has to be a real painted
+   background on an ANCESTOR of the heading — with an SVG sibling the text
+   is technically on the page colour, which measures 1.00:1, and would be
+   genuinely invisible if the SVG ever failed to paint. The outer element
+   paints the outline colour, the inner one is inset and paints the fill,
+   so the rim between them reads as a hand-drawn keyline.
+
+   The polygons are generated into the block at the top of this file by
+   tools/make_pattern.py.
+   ------------------------------------------------------------------ */
+
+.titlecard {
+  position: relative;
+  width: min(100%, 52rem);
+  margin: 0 auto 1.6rem;
+  background: var(--teal);
+  clip-path: var(--burst-hero);
+}
+
+.titlecard__fill {
+  background: var(--grape);
+  clip-path: var(--burst-hero);
+  /* The rim. Small, because the clip is applied to an already-inset box, so
+     the visible weight varies a little around the shape — which suits it. */
+  margin: 5px;
+  /* Generous, because the burst's spikes are not usable area: the text has
+     to stay inside the inner radius or it crosses a notch. */
+  padding: 12% 18%;
+}
+
+.titlecard__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 3.9vw, 3.1rem);
+  line-height: 1.04;
+  text-align: center;
+  /* --on-accent flips with the theme, which is what this needs: --grape is
+     dark purple on light and pale lilac on dark, so the text inverts with
+     it. (--on-sun would be wrong here; see the .card__num note.) */
+  color: var(--on-accent);
+  text-wrap: balance;
+}
+
+/* A smaller card for section labels. */
+.titlecard--tag {
+  display: inline-block;
+  width: auto;
+  margin: 0 0 1.2rem;
+  clip-path: var(--burst-tag);
+}
+
+.titlecard--tag .titlecard__fill {
+  background: var(--sun);
+  clip-path: var(--burst-tag);
+  padding: 2.6rem 3.4rem;
+}
+
+/* Two classes deep, so it wins over .overline's colour while inheriting the
+   rest of its type treatment. --sun does not invert between themes, so this
+   takes --on-sun rather than --on-accent. */
+.titlecard--tag .titlecard__title {
+  color: var(--on-sun);
+  font-size: 0.95rem;
+  line-height: 1.1;
+}
+
+@media (max-width: 700px) {
+  .titlecard__fill { padding: 16% 13%; }
+  .titlecard--tag .titlecard__fill { padding: 2.2rem 2.4rem; }
+}
+
+/* ------------------------------------------------------------------
+   Bands (content sections)
+   ------------------------------------------------------------------ */
+
+.band {
+  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem);
+  border-top: 3px solid var(--ink);
+}
+
+.band--tint {
+  background: var(--paper-tint);
+}
+
+.band__inner {
+  max-width: 68rem;
+  margin: 0 auto;
+}
+
+.band__inner--narrow {
+  max-width: 42rem;
+}
+
+.band__inner--split {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 860px) {
+  .band__inner--split {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: start;
+  }
+}
+
+.overline {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--orange-text);
+  margin-bottom: 0.6rem;
+}
+
+.prose {
+  color: var(--ink-soft);
+  max-width: 56ch;
+}
+
+/* ------------------------------------------------------------------
+   Cards
+
+   Two layers, exactly like .titlecard: the outer element paints the rim and
+   the inner one paints the fill, both clipped to the same ragged polygon.
+
+   A border cannot do this job — clip-path cuts the border box, so a border
+   gets sliced off wherever the edge wobbles inward. And the fill has to be a
+   real background-color on an ANCESTOR of the copy, not a pseudo-element
+   behind it, or the contrast pass measures the text against the rim colour.
+   That is the T-080 lesson, applied here rather than relearned.
+   ------------------------------------------------------------------ */
+
+.cards {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.75rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 760px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Three layers, and the nesting is load-bearing:
+     .card        positioning context, NOT clipped
+       .card__num badge, hangs over the torn edge
+       .card__panel  rim colour, clipped
+         .card__fill fill colour, clipped, inset by the rim width
+
+   The badge has to live outside .card__panel. clip-path clips absolutely
+   positioned descendants too, so while the badge was a child of the clipped
+   element it was being sliced in half by the card's own torn edge — it
+   rendered as a pennant rather than a burst. */
+.card {
+  position: relative;
+  display: flex;
+}
+
+.card__panel {
+  flex: 1 1 auto;
+  /* Flex so the fill can stretch to an equal-height grid row while still
+     accounting for its own margin. height:100% plus a margin overflows by
+     twice the margin, and the clip then carves wedges out of the edges —
+     which is exactly what it did. */
+  display: flex;
+  background: var(--ink);
+  /* drop-shadow, not box-shadow: box-shadow traces the element's rectangle
+     and would sit visibly outside the torn silhouette. */
+  filter: drop-shadow(6px 6px 0 var(--shadow-ink));
+}
+
+.card__fill {
+  flex: 1 1 auto;
+  background: var(--surface);
+  margin: 4px;
+  padding: 2.4rem 1.6rem 1.7rem;
+}
+
+/* Each card gets its own polygon and its own lean, so no two read alike. */
+.cards .card:nth-child(1) .card__panel,
+.cards .card:nth-child(1) .card__fill { clip-path: var(--panel-1); }
+.cards .card:nth-child(2) .card__panel,
+.cards .card:nth-child(2) .card__fill { clip-path: var(--panel-2); }
+.cards .card:nth-child(3) .card__panel,
+.cards .card:nth-child(3) .card__fill { clip-path: var(--panel-3); }
+
+.cards .card:nth-child(1) { transform: rotate(-1.2deg); }
+.cards .card:nth-child(2) { transform: rotate(0.8deg); }
+.cards .card:nth-child(3) { transform: rotate(-0.6deg); }
+
+.card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+/* The number is a small burst rather than a disc. Single layer on purpose:
+   at this size a rim eats most of the shape, and the text sits directly on
+   the accent, which is what the contrast pass then measures. */
+.card__num {
+  position: absolute;
+  top: -14px;
+  left: -10px;
+  z-index: 1;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  clip-path: var(--burst-badge);
+  font-weight: 800;
+  font-size: 0.95rem;
+  filter: drop-shadow(3px 3px 0 var(--shadow-ink));
+}
+
+.card--orange .card__num { background: var(--sun); color: var(--on-sun); }
+.card--teal   .card__num { background: var(--teal); color: var(--on-accent); }
+.card--grape  .card__num { background: var(--grape); color: var(--on-accent); }
+
+/* ------------------------------------------------------------------
+   Swatches
+   ------------------------------------------------------------------ */
+
+.swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* The chip is its own element rather than a ::before, so it can carry the
+   rim layer as a pseudo of its own. It holds no text, so nothing here needs
+   to satisfy the contrast pass. */
+.swatch__chip {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  background: var(--ink);
+  clip-path: var(--burst-badge);
+  filter: drop-shadow(3px 3px 0 var(--shadow-ink));
+}
+
+.swatch__chip::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  clip-path: var(--burst-badge);
+  background: var(--swatch-colour, var(--orange));
+}
+
+.swatch--orange { --swatch-colour: var(--orange); }
+.swatch--teal   { --swatch-colour: var(--teal); }
+.swatch--grape  { --swatch-colour: var(--grape); }
+.swatch--sun    { --swatch-colour: var(--sun); }
+.swatch--lime   { --swatch-colour: var(--lime); }
+
+/* ------------------------------------------------------------------
+   TBD callout — deliberately loud, so an unfilled placeholder is
+   impossible to ship by accident without noticing it.
+   ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------
+   Contact
+   ------------------------------------------------------------------ */
+
+.contact {
+  margin: 1.4rem 0 0;
+}
+
+/* The sticker treatment from .theme-toggle, at reading size. Not a burst:
+   a starburst's spikes are not usable area, and this element is a long
+   string that has to stay legible and clickable. */
+.contact__link {
+  display: inline-block;
+  background: var(--surface);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.62rem 1.3rem;
+  font-weight: 700;
+  font-size: 1.02rem;
+  text-decoration: none;
+  box-shadow: 4px 4px 0 var(--shadow-ink);
+  transform: rotate(-0.8deg);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  /* A long address must not push a narrow phone into a horizontal scroll. */
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.contact__link:hover {
+  transform: rotate(-0.8deg) translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--shadow-ink);
+}
+
+.contact__link:active {
+  transform: rotate(-0.8deg) translate(4px, 4px);
+  box-shadow: 0 0 0 var(--shadow-ink);
+}
+
+/* Retained deliberately though nothing uses it today: CLAUDE.md instructs
+   that unavailable facts ship as visibly-marked placeholders with this
+   treatment, and the contact address was the last one to be filled in.
+   Deleting it would mean reinventing it for the next TBD. */
+.tbd {
+  border: 3px dashed var(--ink);
+  border-radius: 14px 6px 16px 8px;
+  background: var(--paper-tint);
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 0;
+}
+
+/* ------------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------------ */
+
+.foot {
+  border-top: 3px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.foot__mark {
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
+}
+
+.foot__note {
+  max-width: 46ch;
+  margin: 0 auto 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.foot__note--dim {
+  opacity: 0.6;
+  margin-bottom: 0;
+}
+
+/* ------------------------------------------------------------------
+   Scroll reveal. Elements start hidden only when JS is running, so a
+   reader with JS disabled sees everything (app.js adds .is-visible, and
+   .reveal without JS keeps its default visible state below).
+   ------------------------------------------------------------------ */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   404
+   ------------------------------------------------------------------ */
+
+.notfound {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.notfound__code {
+  font-size: clamp(4rem, 18vw, 9rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--surface);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.6rem 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 4px 4px 0 var(--shadow-ink);
+}
+
+.btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--shadow-ink);
+}
+
+/* ---- Demo-only: offline-copy notice (not part of the live site) ---- */
+.demo-note {
+  position: relative;
+  z-index: 50;
+  margin: 0;
+  padding: 0.6rem clamp(1rem, 4vw, 3rem);
+  background: var(--sun);
+  color: var(--on-sun);
+  border-bottom: 3px solid var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.demo-note strong { font-weight: 800; }
+.demo-note a { color: var(--on-sun); font-weight: 700; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <p class="demo-note" role="note">
+    <strong>Offline review copy.</strong> This is a self-contained copy of the
+    picklestoys.com site, bundled into one file so it can be reviewed with no
+    server or network. The live site at
+    <a href="https://picklestoys.com/">picklestoys.com</a> is the canonical
+    version; if the two differ, the live site is right.
+  </p>
+
+  <header class="nav">
+    <a class="wordmark" href="#main">
+      <span class="wordmark__jar" aria-hidden="true">
+        <svg viewBox="0 0 40 44" role="presentation" focusable="false">
+          <rect x="12" y="2" width="16" height="6" rx="2" class="jar-lid"/>
+          <path d="M8 10h24c1 0 2 1 2 2v26c0 2-2 4-4 4H10c-2 0-4-2-4-4V12c0-1 1-2 2-2z" class="jar-glass"/>
+          <ellipse cx="16" cy="22" rx="4" ry="7" class="jar-pickle" transform="rotate(-14 16 22)"/>
+          <ellipse cx="25" cy="30" rx="3.5" ry="6" class="jar-pickle" transform="rotate(20 25 30)"/>
+        </svg>
+      </span>
+      <span class="wordmark__text">Pickles<span class="wordmark__toys">Toys</span></span>
+    </a>
+
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#what">What</a>
+      <a href="#look">Look</a>
+      <a href="#news">News</a>
+    </nav>
+
+    <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">
+      <span class="theme-toggle__dot" aria-hidden="true"></span>
+      <span id="themeToggleLabel">Dark mode</span>
+    </button>
+  </header>
+
+  <main id="main">
+
+    <!-- ---------------------------------------------------------------
+         Hero. States only what is actually true today: the name, the
+         intent, and that nothing is for sale. No prices, no products, no
+         ship dates — those are the owner's to provide.
+         --------------------------------------------------------------- -->
+    <section class="hero">
+      <div class="hero__inner">
+        <p class="pill reveal">
+          <span class="pill__dot" aria-hidden="true"></span>
+          Not open yet — still in the workshop
+        </p>
+
+        <!-- Title card. The burst is an irregular polygon rather than a
+             regular star: alternating outer/inner radii with per-point jitter,
+             generated from a seeded RNG so the shape is reproducible, then
+             frozen here. See docs/BRAND.md. preserveAspectRatio="none" lets it
+             stretch to whatever the heading needs; non-scaling-stroke keeps the
+             outline an even weight when it does. -->
+        <div class="titlecard reveal">
+          <div class="titlecard__fill">
+            <h1 class="titlecard__title">
+              Hand-finished toys,<br>
+              made in small batches.
+            </h1>
+          </div>
+        </div>
+
+        <p class="hero__lede reveal">
+          PicklesToys is a one-bench workshop in the making. Modelled and
+          printed, cut and sewn, cast and painted — whatever a piece needs —
+          then finished by hand, a few at a time. Original characters with the
+          loud, lopsided energy of early-90s cartoons, made for people who
+          never quite grew out of them.
+        </p>
+
+        <p class="hero__meta reveal">
+          <strong>picklestoys.com</strong> is claimed. The toys come next.
+        </p>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------- -->
+    <section id="what" class="band">
+      <div class="band__inner">
+        <div class="titlecard titlecard--tag">
+          <div class="titlecard__fill">
+            <p class="titlecard__title overline">The idea</p>
+          </div>
+        </div>
+        <h2>Three things worth committing to</h2>
+
+        <ul class="cards">
+          <li class="card card--orange reveal">
+            <span class="card__num" aria-hidden="true">01</span>
+            <div class="card__panel">
+              <div class="card__fill">
+                <h3>Finished by hand</h3>
+                <p>
+                  Modelled and printed, or cut and sewn — then sanded, primed,
+                  and painted one at a time. Marks of the hand that finished it
+                  are the point, not a defect to apologize for.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li class="card card--teal reveal">
+            <span class="card__num" aria-hidden="true">02</span>
+            <div class="card__panel">
+              <div class="card__fill">
+                <h3>Small batches</h3>
+                <p>
+                A handful of pieces per run, then on to the next idea. No
+                warehouse, no endless restocks — when a batch is gone, it is gone.
+                </p>
+              </div>
+            </div>
+          </li>
+          <li class="card card--grape reveal">
+            <span class="card__num" aria-hidden="true">03</span>
+            <div class="card__panel">
+              <div class="card__fill">
+                <h3>Originals, not licenses</h3>
+                <p>
+                  Every character is drawn from scratch. The look borrows an
+                  era's attitude; the cast is ours alone.
+                </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------
+         The aesthetic section. Deliberately describes an ERA and a visual
+         language — never a specific show, character, or franchise. See
+         docs/BRAND.md: the inspiration is early-90s kids-TV art direction, and
+         the line not to cross is using anyone else's characters, names, or
+         marks. T-040 fails the build if one appears, comments included.
+         --------------------------------------------------------------- -->
+    <section id="look" class="band band--tint">
+      <div class="band__inner band__inner--split">
+        <div>
+          <div class="titlecard titlecard--tag">
+          <div class="titlecard__fill">
+            <p class="titlecard__title overline">The look</p>
+          </div>
+        </div>
+          <h2>Scrappy, wobbly, loud</h2>
+          <p class="prose">
+            The design language borrows from early-90s cartoon art direction —
+            the era when kids' TV stopped looking tidy. Lumpy silhouettes. Lines
+            that never quite close. Colors that clash on purpose. Halftone dots
+            and paper grain instead of gradients.
+          </p>
+          <p class="prose">
+            These are made to be looked at as much as handled — objects with
+            enough personality to earn a shelf, in a style that stopped being
+            made about thirty years ago.
+          </p>
+        </div>
+
+        <div class="swatches" aria-label="Color palette">
+          <span class="swatch swatch--orange"><i class="swatch__chip" aria-hidden="true"></i><span>Brine Orange</span></span>
+          <span class="swatch swatch--teal"><i class="swatch__chip" aria-hidden="true"></i><span>Jar Teal</span></span>
+          <span class="swatch swatch--grape"><i class="swatch__chip" aria-hidden="true"></i><span>Grape Soda</span></span>
+          <span class="swatch swatch--sun"><i class="swatch__chip" aria-hidden="true"></i><span>Lunchbox Yellow</span></span>
+          <span class="swatch swatch--lime"><i class="swatch__chip" aria-hidden="true"></i><span>Dill Green</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------
+         Contact. The address is real and owner-supplied — it is the only
+         real-world detail on the page, which is the only reason it is here.
+         It shipped as a marked placeholder until 2026-09-10 on the principle
+         that an address which bounces is worse than showing none.
+
+         T-050 asserts the real mailto and T-051 asserts the visible text
+         matches its target: the address is written twice, and a link that
+         displays one address while mailing another is worse than no link.
+         --------------------------------------------------------------- -->
+    <section id="news" class="band">
+      <div class="band__inner band__inner--narrow">
+        <div class="titlecard titlecard--tag">
+          <div class="titlecard__fill">
+            <p class="titlecard__title overline">Keeping in touch</p>
+          </div>
+        </div>
+        <h2>There is nothing to buy yet</h2>
+        <p class="prose">
+          No shop, no mailing list, no pre-orders. When the first batch is real,
+          this page becomes the place it shows up.
+        </p>
+        <p class="prose">
+          If you want to say something before then — a question, an idea, a
+          shop that might want to stock these — the workshop reads its mail.
+        </p>
+        <p class="contact">
+          <a class="contact__link" href="mailto:pureheartmakerstuff@gmail.com">pureheartmakerstuff@gmail.com</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="foot__mark">PicklesToys</p>
+    <p class="foot__note">
+      Hand-finished toys, small batches. Original designs only — not affiliated with
+      or endorsed by any studio, network, or franchise.
+    </p>
+    <p class="foot__note foot__note--dim">
+      <span id="year">2026</span> · picklestoys.com
+    </p>
+  </footer>
+
+  <script>
+/**
+ * PicklesToys — page behavior.
+ *
+ * Progressive enhancements only; the page reads fine with JS disabled.
+ * (The .js class set in index.html's head gates the reveal animation, so
+ * without JS every section is simply visible from the start.)
+ *
+ *  1. Theme toggle: follows the operating system until the reader chooses,
+ *     then remembers the choice (localStorage). Same behavior as
+ *     702withtheview.com and gentletable.com. The pre-paint half lives
+ *     inline in index.html's <head> so the page never flashes the wrong mode.
+ *  2. Scroll-reveal: elements with .reveal fade in as they enter the viewport.
+ *  3. Scrollspy: the nav link for the section in view gets .is-active.
+ *  4. Footer year: kept in JS so the copyright line cannot go stale.
+ */
+(function () {
+  "use strict";
+
+  // ---- 1. Theme toggle ----------------------------------------------------
+  var THEME_KEY = "pickles-theme";
+  var root = document.documentElement;
+  var toggle = document.getElementById("themeToggle");
+  var toggleLabel = document.getElementById("themeToggleLabel");
+  var media = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function storedTheme() {
+    try {
+      var v = localStorage.getItem(THEME_KEY);
+      return v === "dark" || v === "light" ? v : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function currentTheme() {
+    return root.dataset.theme || (media.matches ? "dark" : "light");
+  }
+
+  function applyTheme(theme, persist) {
+    root.dataset.theme = theme;
+    if (persist) {
+      try {
+        localStorage.setItem(THEME_KEY, theme);
+      } catch (e) { /* private mode — the toggle still works for this visit */ }
+    }
+    if (toggle && toggleLabel) {
+      // The label names the mode the button switches TO.
+      var next = theme === "dark" ? "Light mode" : "Dark mode";
+      toggleLabel.textContent = next;
+      toggle.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+      toggle.setAttribute("aria-label", "Switch to " + next.toLowerCase());
+    }
+  }
+
+  // Named (not inline) so an interaction test can invoke it: a real
+  // prefers-color-scheme change cannot be triggered from inside the page.
+  function onSystemThemeChange(matchesDark) {
+    if (!storedTheme()) {
+      applyTheme(matchesDark ? "dark" : "light", false);
+    }
+  }
+
+  if (toggle) {
+    applyTheme(currentTheme(), false);
+    toggle.addEventListener("click", function () {
+      applyTheme(currentTheme() === "dark" ? "light" : "dark", true);
+    });
+
+    // Follow the system while the reader has not expressed a preference, so
+    // switching the OS to night mode changes the page without a reload.
+    media.addEventListener("change", function () {
+      onSystemThemeChange(media.matches);
+    });
+  }
+
+  window.__picklestest = { onSystemThemeChange: onSystemThemeChange };
+
+  // ---- 2. Scroll-reveal ---------------------------------------------------
+  var prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  var revealables = document.querySelectorAll(".reveal");
+
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    revealables.forEach(function (el) {
+      el.classList.add("is-visible");
+    });
+  } else {
+    var revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    revealables.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  }
+
+  // ---- 3. Scrollspy -------------------------------------------------------
+  var navLinks = document.querySelectorAll(".nav__links a[href^='#']");
+  var sectionsById = {};
+
+  navLinks.forEach(function (link) {
+    var section = document.querySelector(link.getAttribute("href"));
+    if (section) {
+      sectionsById[section.id] = link;
+    }
+  });
+
+  if ("IntersectionObserver" in window) {
+    var spyObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          // Only ids present in sectionsById are ever observed, so this
+          // lookup always resolves.
+          var link = sectionsById[entry.target.id];
+          if (entry.isIntersecting) {
+            navLinks.forEach(function (l) {
+              l.classList.remove("is-active");
+              l.removeAttribute("aria-current");
+            });
+            link.classList.add("is-active");
+            // Screen readers announce the section being read, not just a
+            // visual underline.
+            link.setAttribute("aria-current", "true");
+          }
+        });
+      },
+      // A narrow horizontal band across the middle of the viewport, so only
+      // the section actually being read counts as "in view".
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    Object.keys(sectionsById).forEach(function (id) {
+      spyObserver.observe(document.getElementById(id));
+    });
+  }
+
+  // ---- 4. Footer year -----------------------------------------------------
+  var year = document.getElementById("year");
+  if (year) {
+    year.textContent = String(new Date().getFullYear());
+  }
+})();
+  </script>
+</body>
+</html>
